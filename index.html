@@ -17,25 +17,22 @@
         .room-wall { 
             background-color: var(--wall-color); 
             background-image: 
-                linear-gradient(rgba(0,0,0,0.04) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(0,0,0,0.04) 2px, transparent 2px);
+                linear-gradient(rgba(0,0,0,0.03) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 2px, transparent 2px);
             background-size: 30px 30px;
             transition: background-color 0.5s; 
         }
         
         .room-floor { 
             background-color: var(--floor-color); 
-            /* Textura de tábuas de madeira na vertical */
             background-image: 
                 linear-gradient(to top, rgba(0,0,0,0.15) 0%, transparent 100%),
-                repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(0,0,0,0.06) 38px, rgba(0,0,0,0.06) 40px);
+                repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(0,0,0,0.05) 38px, rgba(0,0,0,0.05) 40px);
             transition: background-color 0.5s; 
             box-shadow: inset 0 10px 15px -10px rgba(0,0,0,0.2);
         }
 
-        .wood-texture {
-            background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 2px, transparent 2px, transparent 8px);
-        }
+        .wood-texture { background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 2px, transparent 2px, transparent 8px); }
 
         .metal-cap { 
             background: linear-gradient(135deg, #f9fafb 0%, #9ca3af 40%, #e5e7eb 60%, #6b7280 100%);
@@ -90,7 +87,7 @@
     <div id="game-app" class="w-full h-full sm:max-w-md sm:h-[850px] bg-white sm:rounded-[40px] sm:shadow-2xl sm:border-8 border-gray-900 relative flex flex-col overflow-hidden">
         
         <!-- HEADER (Status, XP, Coins, Shop) -->
-        <div class="bg-gray-800 text-white p-2 px-3 flex flex-col z-40 relative shadow-md">
+        <div class="bg-gray-800 text-white p-2 px-3 flex flex-col z-40 relative shadow-md shrink-0">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-2">
                     <div id="level-badge" class="bg-blue-600 text-white font-black text-xs px-2 py-1 rounded border-2 border-blue-400 shadow-sm flex flex-col items-center">
@@ -118,7 +115,7 @@
                 </div>
             </div>
             
-            <div class="flex justify-between items-center bg-gray-100 p-1.5 rounded-lg border border-gray-300 shadow-inner">
+            <div class="flex justify-between items-center bg-gray-100 p-1.5 rounded-lg border border-gray-300 shadow-inner shrink-0">
                 <div class="flex flex-col items-center w-1/5"><svg class="w-4 h-4 text-blue-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2C12,2 5,10 5,15C5,18.86 8.14,22 12,22C15.86,22 19,18.86 19,15C19,10 12,2 12,2Z"/></svg><div class="w-full h-1.5 bg-gray-300 rounded-full overflow-hidden"><div id="bar-fuel" class="h-full bg-blue-500 progress-bar w-full"></div></div></div>
                 <div class="flex flex-col items-center w-1/5"><svg class="w-4 h-4 text-green-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M7,22A2,2 0 0,1 5,20V19A2,2 0 0,1 7,17H17A2,2 0 0,1 19,19V20A2,2 0 0,1 17,22H7M7,15A2,2 0 0,1 5,13V12A2,2 0 0,1 7,10H17A2,2 0 0,1 19,12V13A2,2 0 0,1 17,15H7Z"/></svg><div class="w-full h-1.5 bg-gray-300 rounded-full overflow-hidden"><div id="bar-clean" class="h-full bg-green-500 progress-bar w-full"></div></div></div>
                 <div class="flex flex-col items-center w-1/5"><svg class="w-4 h-4 text-yellow-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11,15H6L13,1V9H18L11,23V15Z"/></svg><div class="w-full h-1.5 bg-gray-300 rounded-full overflow-hidden"><div id="bar-energy" class="h-full bg-yellow-400 progress-bar w-full"></div></div></div>
@@ -126,23 +123,29 @@
             </div>
         </div>
 
-        <!-- AMBIENTES & CENA -->
-        <div class="flex-1 relative flex flex-col overflow-hidden">
-            <div class="room-wall flex-1 relative w-full border-b-[6px] border-black/10">
+        <!-- AMBIENTES & CENA (ESTRUTURA RESPONSIVA PERFEITA) -->
+        <div class="flex-1 relative flex flex-col w-full overflow-hidden">
+            
+            <!-- PAREDE (60% do ecrã) -->
+            <div class="h-[60%] w-full relative room-wall border-b-4 border-black/20 z-0">
                 <div id="room-title" class="absolute top-4 left-1/2 -translate-x-1/2 bg-white/80 px-5 py-1 rounded-full font-black text-gray-800 text-sm tracking-widest uppercase shadow-md z-10 backdrop-blur-md border border-white/50">Cozinha</div>
                 <div id="thought-bubble" class="absolute top-14 left-1/2 -translate-x-1/2 bg-white px-3 py-2 rounded-xl text-xs font-bold text-gray-700 shadow-lg opacity-0 transition-opacity duration-500 z-10 pointer-events-none before:content-[''] before:absolute before:-bottom-2 before:left-1/2 before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-white">Estou feliz!</div>
             </div>
-            <div class="room-floor h-1/3 relative w-full"></div>
+            
+            <!-- CHÃO (40% do ecrã) -->
+            <div class="h-[40%] w-full relative room-floor z-0"></div>
 
             <div class="absolute inset-0 night-overlay z-30 flex justify-center items-center">
                 <div id="zzz-container" class="hidden absolute top-20 right-20 text-blue-300 font-black text-4xl"><span class="absolute zzz-anim" style="animation-delay: 0s;">Z</span><span class="absolute zzz-anim text-3xl" style="animation-delay: 0.5s; right: -15px; top: -15px;">z</span><span class="absolute zzz-anim text-2xl" style="animation-delay: 1s; right: -25px; top: -25px;">z</span></div>
             </div>
 
-            <!-- MÓVEIS CSS -->
-            <div id="furniture-container" class="absolute inset-0 z-10 pointer-events-none">
+            <!-- CAMADA DOS MÓVEIS (Ancorados à linha exata que divide a parede do chão, 60% da altura) -->
+            <div id="furniture-container" class="absolute top-0 left-0 w-full h-[60%] z-10 pointer-events-none">
                 
+                <!-- COZINHA -->
                 <div id="room-kitchen" class="furniture-group w-full h-full relative">
-                    <div id="fridge" onclick="toggleFridge()" class="absolute left-[8%] w-28 h-56 border-4 border-gray-400 rounded-t-xl flex flex-col shadow-lg pointer-events-auto cursor-pointer ground-shadow bg-sky-50" style="bottom: 12%; perspective: 500px;">
+                    <!-- Geladeira (bottom-0 coloca na linha, translate-y-4 empurra ligeiramente para dentro do chão criando perspectiva) -->
+                    <div id="fridge" onclick="toggleFridge()" class="absolute bottom-0 translate-y-4 left-[8%] w-28 h-56 border-4 border-gray-400 rounded-t-xl flex flex-col shadow-lg pointer-events-auto cursor-pointer ground-shadow bg-sky-50" style="perspective: 500px;">
                         <div class="absolute inset-0 flex flex-col p-2 gap-2 z-0 pt-6">
                             <div class="w-full h-2 bg-sky-200 mt-2"></div><div class="w-full h-2 bg-sky-200 mt-6"></div>
                             <div class="flex gap-1 absolute bottom-2"><div class="w-4 h-6 bg-red-400 rounded-sm"></div><div class="w-4 h-8 bg-green-400 rounded-sm"></div></div>
@@ -155,23 +158,26 @@
                         </div>
                         <div class="absolute -bottom-2 left-2 w-3 h-2 bg-gray-500"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-gray-500"></div>
                     </div>
-                    <div class="absolute right-[5%] w-36 h-28 bg-orange-200 border-4 border-orange-400 rounded-t-lg shadow-lg ground-shadow wood-texture" style="bottom: 12%;">
+                    <!-- Balcão -->
+                    <div class="absolute bottom-0 translate-y-2 right-[5%] w-36 h-28 bg-orange-200 border-4 border-orange-400 rounded-t-lg shadow-lg ground-shadow wood-texture">
                         <div class="w-full h-4 bg-gray-300 border-b-4 border-orange-400 rounded-t-lg"></div><div class="w-full mt-2 h-1 bg-orange-300"></div><div class="w-full mt-2 h-1 bg-orange-300"></div>
                         <div class="absolute -bottom-2 left-2 w-3 h-2 bg-orange-500"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-orange-500"></div>
                     </div>
                 </div>
                 
+                <!-- BANHEIRO -->
                 <div id="room-bathroom" class="furniture-group w-full h-full relative hidden">
-                    <div class="absolute left-1/2 -translate-x-1/2 w-64 h-24 bg-white border-4 border-gray-300 rounded-b-full shadow-xl flex items-end justify-center pb-2 ground-shadow" style="bottom: 12%;">
+                    <div class="absolute bottom-0 translate-y-2 left-1/2 -translate-x-1/2 w-64 h-24 bg-white border-4 border-gray-300 rounded-b-full shadow-xl flex items-end justify-center pb-2 ground-shadow">
                         <div class="absolute -bottom-2 left-6 w-4 h-4 bg-gray-300 rounded-full"></div><div class="absolute -bottom-2 right-6 w-4 h-4 bg-gray-300 rounded-full"></div>
                     </div>
-                    <div class="absolute top-[20%] right-[30%] w-4 h-24 bg-gray-300 border-x-2 border-gray-500"></div><div class="absolute top-[20%] right-[30%] w-16 h-4 bg-gray-300 border-y-2 border-l-2 border-gray-500 rounded-l-full -ml-12"></div><div class="absolute top-[22%] right-[35%] w-8 h-4 bg-gray-400 rounded-b-full border-2 border-gray-600"></div>
-                    <div id="shower-fx" class="absolute top-[25%] right-[35%] w-8 h-32 hidden"><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-1 shower-water" style="animation-delay: 0s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-4 shower-water" style="animation-delay: 0.2s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-7 shower-water" style="animation-delay: 0.4s;"></div></div>
+                    <div class="absolute bottom-24 right-[30%] w-4 h-24 bg-gray-300 border-x-2 border-gray-500"></div><div class="absolute bottom-[116px] right-[30%] w-16 h-4 bg-gray-300 border-y-2 border-l-2 border-gray-500 rounded-l-full -ml-12"></div><div class="absolute bottom-[116px] right-[35%] w-8 h-4 bg-gray-400 rounded-b-full border-2 border-gray-600"></div>
+                    <div id="shower-fx" class="absolute bottom-4 right-[35%] w-8 h-32 hidden"><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-1 shower-water" style="animation-delay: 0s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-4 shower-water" style="animation-delay: 0.2s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-7 shower-water" style="animation-delay: 0.4s;"></div></div>
                 </div>
                 
+                <!-- QUARTO -->
                 <div id="room-bedroom" class="furniture-group w-full h-full relative hidden pointer-events-auto">
-                    <!-- GUARDA-ROUPA NA EXATA MESMA ALTURA DA CAMA (style bottom forçado) -->
-                    <div onclick="openShop(true)" class="absolute left-[5%] w-32 h-[260px] bg-amber-800 border-4 border-amber-950 rounded-t-lg shadow-2xl cursor-pointer active:scale-[0.98] transition-transform flex flex-col relative group hover:brightness-110 wood-texture ground-shadow" style="bottom: -10%;">
+                    <!-- GUARDA-ROUPA FÍSICO (Ancorado no bottom-0, nunca vai flutuar) -->
+                    <div onclick="openShop(true)" class="absolute bottom-0 translate-y-6 left-[5%] w-32 h-[260px] bg-amber-800 border-4 border-amber-950 rounded-t-lg shadow-2xl cursor-pointer active:scale-[0.98] transition-transform flex flex-col relative group hover:brightness-110 wood-texture ground-shadow">
                         <div class="w-full bg-amber-950 text-amber-200 text-[10px] text-center font-bold tracking-widest py-1 border-b-2 border-black/50 z-10 rounded-t-sm">ROUPAS</div>
                         <div class="flex-1 flex w-full">
                             <div class="w-1/2 h-full border-r-2 border-black/40 bg-amber-700/80 relative"><div class="absolute top-1/2 right-1 -translate-y-1/2 w-2.5 h-8 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
@@ -180,23 +186,23 @@
                         <div class="absolute -bottom-2 left-2 w-3 h-2 bg-amber-950"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-amber-950"></div>
                     </div>
                     
-                    <div id="bedroom-window" class="absolute top-[8%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner">
+                    <div id="bedroom-window" class="absolute top-[10%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner">
                         <div class="w-1/2 h-1/2 border-r-2 border-b-2 border-gray-600 relative"><div id="win-star1" class="hidden absolute top-1 left-2 w-1 h-1 bg-white rounded-full shadow-[0_0_2px_#fff]"></div></div>
                         <div class="w-1/2 h-1/2 border-b-2 border-gray-600 relative"><div id="win-sun-moon" class="absolute top-2 right-2 w-6 h-6 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fde047]"></div></div>
                         <div class="w-1/2 h-1/2 border-r-2 border-gray-600"></div>
                         <div class="w-1/2 h-1/2 relative"><div id="win-star2" class="hidden absolute bottom-2 left-2 w-1 h-1 bg-white rounded-full shadow-[0_0_2px_#fff]"></div></div>
                     </div>
-                    <!-- CAMA -->
-                    <div class="absolute right-[5%] w-44 h-20 bg-indigo-500 border-4 border-indigo-800 rounded-t-xl rounded-bl-md flex items-end shadow-xl pointer-events-none ground-shadow" style="bottom: 12%;">
+                    <!-- CAMA (Ancorada exatamente no mesmo bottom-0 do guarda-roupa) -->
+                    <div class="absolute bottom-0 translate-y-4 right-[5%] w-44 h-20 bg-indigo-500 border-4 border-indigo-800 rounded-t-xl rounded-bl-md flex items-end shadow-xl pointer-events-none ground-shadow">
                         <div class="absolute top-3 right-4 w-14 h-8 bg-white border-2 border-gray-300 rounded-lg shadow-sm z-10"></div><div class="w-3/4 h-full bg-indigo-400 border-r-4 border-indigo-800 rounded-tl-xl rounded-bl-md shadow-inner"></div>
-                        <!-- Pés Cama -->
                         <div class="absolute -bottom-2 left-2 w-3 h-2 bg-indigo-900"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-indigo-900"></div>
                     </div>
                 </div>
                 
+                <!-- SALA -->
                 <div id="room-livingroom" class="furniture-group w-full h-full relative hidden pointer-events-auto">
-                    <div class="absolute left-1/2 -translate-x-1/2 w-72 h-14 bg-red-400/80 rounded-[100%] shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)] border-2 border-red-500/40 pointer-events-none backdrop-blur-sm" style="bottom: 10%;"></div>
-                    <div class="absolute left-[8%] w-36 h-14 bg-amber-800 border-4 border-amber-950 rounded-md shadow-lg flex justify-center items-start pointer-events-none ground-shadow wood-texture" style="bottom: 12%;">
+                    <div class="absolute bottom-0 translate-y-10 left-1/2 -translate-x-1/2 w-72 h-14 bg-red-400/80 rounded-[100%] shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)] border-2 border-red-500/40 pointer-events-none backdrop-blur-sm"></div>
+                    <div class="absolute bottom-0 translate-y-4 left-[8%] w-36 h-14 bg-amber-800 border-4 border-amber-950 rounded-md shadow-lg flex justify-center items-start pointer-events-none ground-shadow wood-texture">
                         <div class="w-10 h-5 bg-gray-800 -mt-5 border-x-2 border-t-2 border-gray-900"></div>
                         <div onclick="toggleTV()" class="absolute bottom-full mb-4 w-32 h-24 bg-gray-900 border-[5px] border-black rounded-lg flex items-center justify-center overflow-hidden shadow-2xl pointer-events-auto cursor-pointer group">
                             <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/20 to-transparent z-10 pointer-events-none"></div>
@@ -208,9 +214,9 @@
                 </div>
             </div>
 
-            <!-- PERSONAGEM ISQUEIRO -->
-            <div class="absolute inset-0 flex justify-center items-center z-20 pointer-events-none mt-6">
-                <div class="transform scale-[0.75] origin-bottom transition-transform duration-300 flex justify-center items-center w-full h-full">
+            <!-- PERSONAGEM ISQUEIRO (Ancorado perfeitamente na linha do chão) -->
+            <div class="absolute top-0 left-0 w-full h-[60%] z-20 pointer-events-none flex justify-center items-end">
+                <div class="transform scale-[0.80] translate-y-8 origin-bottom transition-transform duration-300 flex justify-center items-center">
                     <div id="lighter-character" class="relative breathing pointer-events-auto cursor-pointer drop-shadow-2xl transition-transform active:scale-95">
                         <div id="flame" class="absolute -top-16 left-1/2 -translate-x-1/2 w-12 h-16 flame-active z-20 transition-all duration-300">
                             <svg viewBox="0 0 30 40" class="w-full h-full drop-shadow-md"><path d="M15 0 C15 0, 30 15, 30 25 C30 35, 22 40, 15 40 C8 40, 0 35, 0 25 C0 15, 15 0, 15 0 Z" fill="#ff7a00"/><path d="M15 10 C15 10, 24 20, 24 28 C24 34, 19 38, 15 38 C11 38, 6 34, 6 28 C6 20, 15 10, 15 10 Z" fill="#ffc800"/><path d="M15 20 C15 20, 19 26, 19 31 C19 34, 17 36, 15 36 C13 36, 11 34, 11 31 C11 26, 15 20, 15 20 Z" fill="#ffffff"/></svg>
@@ -239,7 +245,8 @@
                 </div>
             </div>
 
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 action-layer">
+            <!-- BOTÕES DE AÇÃO (Agora ancorados ao fundo do ecrã de forma segura) -->
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 action-layer w-full px-6 flex justify-center">
                 <button id="action-kitchen" onclick="feed()" class="action-btn bg-blue-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(29,78,216)] flex items-center gap-2 border-2 border-blue-700 uppercase transition-colors hover:bg-blue-400">Abastecer</button>
                 <button id="action-bathroom" onclick="clean()" class="hidden action-btn bg-green-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(21,128,61)] flex items-center gap-2 border-2 border-green-700 uppercase transition-colors hover:bg-green-400">Dar Banho</button>
                 <button id="action-bedroom" onclick="toggleSleep()" class="hidden action-btn bg-indigo-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(67,56,202)] flex items-center gap-2 border-2 border-indigo-700 uppercase transition-colors hover:bg-indigo-400"><span id="btn-sleep-text">Dormir</span></button>
@@ -248,8 +255,8 @@
             <div id="feedback-text" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-black text-white outline-4 drop-shadow-xl opacity-0 pointer-events-none transition-all duration-500 z-50"></div>
         </div>
 
-        <!-- NAVEGAÇÃO -->
-        <div class="bg-white border-t-4 border-gray-200 p-2 sm:pb-4 flex justify-around items-center z-40 relative action-layer shadow-[0_-4px_10px_rgba(0,0,0,0.05)] rounded-b-[32px]">
+        <!-- NAVEGAÇÃO BASE -->
+        <div class="bg-white border-t-4 border-gray-200 p-2 sm:pb-4 flex justify-around items-center z-40 relative action-layer shadow-[0_-4px_10px_rgba(0,0,0,0.05)] rounded-b-[32px] shrink-0">
             <button onclick="changeRoom('kitchen')" id="nav-kitchen" class="nav-btn active flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500">
                 <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M18.06 22.94C16.89 24.11 15 24.11 13.83 22.94L8.17 17.28C7.6 16.71 7.29 15.95 7.29 15.15C7.29 14.34 7.6 13.58 8.17 13.02L13.83 7.36C15 6.19 16.89 6.19 18.06 7.36L19.47 8.78L22.3 5.95L23.71 7.36L20.88 10.19L22.3 11.61L18.06 15.85C17.67 16.24 17.67 16.87 18.06 17.26C18.45 17.65 19.08 17.65 19.47 17.26L23.71 21.5L22.3 22.91L18.06 18.68C17.67 18.29 17.04 18.29 16.65 18.68C16.26 19.07 16.26 19.7 16.65 20.09L18.06 21.5M10.17 11L6.17 7L11.83 1.34C13 0.17 14.89 0.17 16.06 1.34L17.47 2.75L14.64 5.58L16.06 7L13.23 9.83L11.82 8.41L10.41 9.83C10.02 10.22 10.02 10.85 10.41 11.24L10.17 11M2.05 13.84L7.71 19.5L6.29 20.91L3.46 18.08L2.05 19.5L0.64 18.08L3.46 15.25L2.05 13.84Z"/></svg><span class="text-[10px] font-black uppercase">Cozinha</span>
             </button>
@@ -274,7 +281,7 @@
         </div>
 
         <div id="shop-modal" class="hidden absolute inset-0 bg-black/70 z-50 flex flex-col justify-end transition-opacity">
-            <div class="bg-white rounded-t-3xl p-4 h-[75%] flex flex-col relative shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+            <div class="bg-white rounded-t-3xl p-4 max-h-[80vh] min-h-[50vh] flex flex-col relative shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
                 <div class="flex justify-between items-center mb-4">
                     <h2 id="shop-title" class="text-2xl font-black text-purple-600 flex items-center gap-2">LOJA</h2>
                     <div id="shop-coin-container" class="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full border-2 border-yellow-400">
@@ -282,7 +289,7 @@
                     </div>
                     <button onclick="closeShop()" class="w-8 h-8 bg-red-100 hover:bg-red-200 text-red-600 rounded-full font-bold transition">X</button>
                 </div>
-                <div class="flex border-b-2 border-gray-200 mb-4">
+                <div class="flex border-b-2 border-gray-200 mb-4 shrink-0">
                     <button onclick="renderShop('colors')" class="shop-tab active-tab flex-1 py-2 font-bold text-gray-500 border-b-4 border-transparent uppercase text-sm">Cores</button>
                     <button onclick="renderShop('hats')" class="shop-tab flex-1 py-2 font-bold text-gray-500 border-b-4 border-transparent uppercase text-sm">Chapéus</button>
                     <button onclick="renderShop('shirts')" class="shop-tab flex-1 py-2 font-bold text-gray-500 border-b-4 border-transparent uppercase text-sm">Roupas</button>
@@ -311,13 +318,13 @@
 
         <!-- TELA DO JOGO (CANVAS) -->
         <div id="game-canvas-screen" class="hidden absolute inset-0 bg-sky-300 flex-col z-[60]">
-            <div class="p-2 px-4 bg-sky-900 text-white flex justify-between items-center shadow-md z-50 relative">
+            <div class="p-2 px-4 bg-sky-900 text-white flex justify-between items-center shadow-md z-50 relative shrink-0">
                 <div class="font-bold text-lg flex gap-4"><span>Pts: <span id="game-score">0</span></span><span class="text-yellow-400">$ <span id="game-coins">0</span></span></div>
                 <button onclick="stopMinigame()" class="bg-red-500 hover:bg-red-400 px-3 py-1 rounded font-bold border-b-4 border-red-700 active:translate-y-1 active:border-b-0 text-sm transition">Sair</button>
             </div>
             
-            <div class="flex-1 relative overflow-hidden" id="canvas-container">
-                <canvas id="gameCanvas" class="block w-full h-full cursor-none"></canvas>
+            <div class="flex-1 relative overflow-hidden flex flex-col" id="canvas-container">
+                <canvas id="gameCanvas" class="block w-full flex-1 cursor-none"></canvas>
                 
                 <!-- D-Pad Genérico para Snake e Tetris -->
                 <div id="dpad-controls" class="hidden absolute bottom-6 left-0 w-full px-4 flex justify-between items-end z-40 pointer-events-none">
@@ -452,12 +459,12 @@
             isSleeping = !isSleeping;
             if (isSleeping) { 
                 document.getElementById('game-app').classList.add('is-sleeping'); document.getElementById('btn-sleep-text').innerText = "ACORDAR"; document.getElementById('zzz-container').classList.remove('hidden'); document.querySelectorAll('.nav-btn:not(#nav-bedroom)').forEach(b => b.style.opacity = '0.3'); 
-                document.getElementById('bedroom-window').className = "absolute top-[8%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-950 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
+                document.getElementById('bedroom-window').className = "absolute top-[10%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-950 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
                 document.getElementById('win-sun-moon').className = "absolute top-2 right-2 w-4 h-4 bg-gray-200 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fff]";
                 document.getElementById('win-star1').classList.remove('hidden'); document.getElementById('win-star2').classList.remove('hidden');
             } else { 
                 document.getElementById('game-app').classList.remove('is-sleeping'); document.getElementById('btn-sleep-text').innerText = "DORMIR"; document.getElementById('zzz-container').classList.add('hidden'); document.querySelectorAll('.nav-btn').forEach(b => b.style.opacity = '1'); 
-                document.getElementById('bedroom-window').className = "absolute top-[8%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
+                document.getElementById('bedroom-window').className = "absolute top-[10%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
                 document.getElementById('win-sun-moon').className = "absolute top-2 right-2 w-6 h-6 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fde047]";
                 document.getElementById('win-star1').classList.add('hidden'); document.getElementById('win-star2').classList.add('hidden');
             }
@@ -793,11 +800,6 @@
     </script>
 </body>
 </html>
-
-
-
-
-
 
 
 ```
