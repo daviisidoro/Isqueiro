@@ -4,63 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Meu Isqueiro</title>
-    <!-- Ícone da aba do navegador (Favicon) gerado em SVG puro -->
+    <!-- Ícone da aba (Favicon) que substitui o globo -->
     <link rel="icon" href="icon.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap');
 
-        :root { 
-            --wall-color: #fef08a; 
-            --floor-color: #fef9c3; 
-            --lighter-bg: #dbeafe; 
-            --lighter-fill: #3b82f6; 
-        }
+        :root { --wall-color: #fef08a; --floor-color: #fef9c3; --lighter-bg: #dbeafe; --lighter-fill: #3b82f6; }
 
-        body { 
-            font-family: 'Nunito', sans-serif; 
-            background-color: #0f172a; 
-            touch-action: none; 
-            user-select: none; 
-            overflow: hidden; 
-            -webkit-user-select: none; 
-        }
+        body { font-family: 'Nunito', sans-serif; background-color: #0f172a; touch-action: none; user-select: none; overflow: hidden; -webkit-user-select: none; }
 
         /* --- TEXTURAS PREMIUM --- */
         .room-wall { 
             background-color: var(--wall-color); 
-            background-image: 
-                linear-gradient(rgba(0,0,0,0.04) 2px, transparent 2px),
-                linear-gradient(90deg, rgba(0,0,0,0.04) 2px, transparent 2px);
-            background-size: 30px 30px;
-            transition: background-color 0.5s; 
+            background-image: linear-gradient(rgba(0,0,0,0.04) 2px, transparent 2px), linear-gradient(90deg, rgba(0,0,0,0.04) 2px, transparent 2px);
+            background-size: 30px 30px; transition: background-color 0.5s; 
         }
         
         .room-floor { 
             background-color: var(--floor-color); 
-            background-image: 
-                linear-gradient(to top, rgba(0,0,0,0.15) 0%, transparent 100%),
-                repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(0,0,0,0.06) 38px, rgba(0,0,0,0.06) 40px);
-            transition: background-color 0.5s; 
-            box-shadow: inset 0 10px 15px -10px rgba(0,0,0,0.2);
+            background-image: linear-gradient(to top, rgba(0,0,0,0.15) 0%, transparent 100%), repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(0,0,0,0.06) 38px, rgba(0,0,0,0.06) 40px);
+            transition: background-color 0.5s; box-shadow: inset 0 10px 15px -10px rgba(0,0,0,0.2);
         }
 
-        .wood-texture {
-            background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 2px, transparent 2px, transparent 8px);
-        }
+        .wood-texture { background-image: repeating-linear-gradient(to bottom, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 2px, transparent 2px, transparent 8px); }
 
         .metal-cap { 
             background: linear-gradient(135deg, #f9fafb 0%, #9ca3af 40%, #e5e7eb 60%, #6b7280 100%);
-            background-image: 
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.4) 0px, rgba(255,255,255,0.4) 1px, transparent 1px, transparent 4px),
-                linear-gradient(135deg, #f9fafb 0%, #9ca3af 40%, #e5e7eb 60%, #6b7280 100%);
+            background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.4) 0px, rgba(255,255,255,0.4) 1px, transparent 1px, transparent 4px), linear-gradient(135deg, #f9fafb 0%, #9ca3af 40%, #e5e7eb 60%, #6b7280 100%);
         }
 
-        /* --- SOMBRAS DE ANCORAGEM --- */
+        /* --- SOMBRAS DE ANCORAGEM FIXA --- */
         .ground-shadow { position: relative; }
         .ground-shadow::after {
-            content: ''; position: absolute; bottom: -10px; left: 5%; width: 90%; height: 16px;
+            content: ''; position: absolute; bottom: -8px; left: 5%; width: 90%; height: 16px;
             background: rgba(0,0,0,0.35); border-radius: 50%; filter: blur(3px); z-index: -1;
         }
 
@@ -81,7 +59,6 @@
         .level-up { animation: levelUpAnim 0.8s ease-out; }
 
         .dirt-overlay { background-image: radial-gradient(circle, rgba(0,0,0,0.8) 10%, transparent 11%), radial-gradient(circle, rgba(0,0,0,0.6) 10%, transparent 11%); background-size: 20px 20px, 30px 30px; background-position: 0 0, 15px 15px; opacity: 0; pointer-events: none; transition: opacity 1s; }
-
         .progress-bar { transition: width 0.5s ease-out, background-color 0.5s ease-out; }
         .nav-btn { transition: transform 0.1s, color 0.2s; }
         .nav-btn:active { transform: scale(0.90); }
@@ -93,79 +70,83 @@
         .is-sleeping .night-overlay { opacity: 1; pointer-events: auto; }
         .is-sleeping .action-layer { z-index: 50; }
 
-        .shop-scroll::-webkit-scrollbar { width: 6px; }
+        .shop-scroll::-webkit-scrollbar { width: 8px; }
         .shop-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         .shop-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<!-- O ecrã fica cinza no PC, centralizando a App (max-w-[600px]) que se assemelha a um ecrã de telemóvel largo -->
-<body class="h-screen w-screen flex justify-center items-center bg-gray-900">
+<body class="h-screen w-screen bg-black overflow-hidden flex flex-col justify-center items-center">
 
     <div id="game-app" class="w-full h-full max-w-[600px] bg-white relative flex flex-col overflow-hidden md:shadow-[0_0_50px_rgba(0,0,0,0.5)] md:border-x-4 border-gray-950">
         
         <!-- HEADER (Status, XP, Coins, Shop) -->
-        <div class="bg-gray-800 text-white p-2 px-3 flex flex-col z-40 relative shadow-md shrink-0">
-            <div class="flex justify-between items-center mb-2">
-                <div class="flex items-center gap-2">
-                    <div id="level-badge" class="bg-blue-600 text-white font-black text-xs px-2 py-1 rounded border-2 border-blue-400 shadow-sm flex flex-col items-center">
-                        <span>NVL</span><span id="level-display" class="text-lg leading-none">1</span>
-                    </div>
-                    <div class="flex flex-col w-20 sm:w-24">
-                        <span class="text-[10px] text-gray-400 font-bold uppercase" id="age-display">Idade: 0 dias</span>
-                        <div class="w-full h-2.5 bg-gray-900 rounded-full border border-gray-600 overflow-hidden">
-                            <div id="xp-bar" class="h-full bg-cyan-400 transition-all duration-300 w-0"></div>
+        <div class="bg-gray-800 w-full z-40 relative shadow-md shrink-0">
+            <div class="w-full text-white p-2 px-4 flex flex-col">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center gap-3">
+                        <div id="level-badge" class="bg-blue-600 text-white font-black text-xs px-2 py-1 rounded border-2 border-blue-400 shadow-sm flex flex-col items-center">
+                            <span>NVL</span><span id="level-display" class="text-lg leading-none">1</span>
+                        </div>
+                        <div class="flex flex-col w-24">
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider" id="age-display">Idade: 0 dias</span>
+                            <div class="w-full h-2.5 bg-gray-900 rounded-full border border-gray-600 overflow-hidden">
+                                <div id="xp-bar" class="h-full bg-cyan-400 transition-all duration-300 w-0"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="flex gap-2 items-center">
-                    <div class="flex items-center gap-1 bg-gray-900 px-2 py-1 rounded-full border-2 border-yellow-500 shadow-inner">
-                        <svg class="w-4 h-4 text-yellow-400 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" stroke="#b45309" stroke-width="2"/><text x="12" y="16" font-size="12" font-weight="900" text-anchor="middle" fill="#fef08a">$</text></svg>
-                        <span id="coin-display" class="font-black text-md tracking-wider text-yellow-400">0</span>
+                    <div class="flex gap-2 items-center">
+                        <div class="flex items-center gap-1.5 bg-gray-900 px-3 py-1 rounded-full border-2 border-yellow-500 shadow-inner">
+                            <svg class="w-4 h-4 text-yellow-400 drop-shadow-md" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10" stroke="#b45309" stroke-width="2"/><text x="12" y="16" font-size="12" font-weight="900" text-anchor="middle" fill="#fef08a">$</text></svg>
+                            <span id="coin-display" class="font-black text-md tracking-wider text-yellow-400">0</span>
+                        </div>
+                        <button onclick="togglePalette()" class="p-2 bg-gray-700 hover:bg-gray-600 rounded-full active:scale-95 transition border border-gray-600 shadow-sm">
+                            <svg class="w-5 h-5 text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z"/></svg>
+                        </button>
+                        <button onclick="openShop(false)" class="p-2 px-3 bg-purple-600 hover:bg-purple-500 rounded-full active:scale-95 transition border border-purple-800 font-bold text-sm flex items-center gap-1 shadow-sm">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18Z"/></svg> <span class="hidden sm:inline">LOJA</span>
+                        </button>
                     </div>
-                    <button onclick="togglePalette()" class="p-1.5 bg-gray-700 hover:bg-gray-600 rounded-full active:scale-95 transition border border-gray-600 shadow-sm">
-                        <svg class="w-5 h-5 text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z"/></svg>
-                    </button>
-                    <button onclick="openShop(false)" class="p-1.5 px-3 bg-purple-600 hover:bg-purple-500 rounded-full active:scale-95 transition border border-purple-800 font-bold text-xs flex items-center gap-1 shadow-sm">
-                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18Z"/></svg> LOJA
-                    </button>
                 </div>
             </div>
-            
-            <div class="flex justify-between items-center bg-gray-100 p-1.5 rounded-lg border border-gray-300 shadow-inner">
-                <div class="flex flex-col items-center w-1/5"><svg class="w-4 h-4 text-blue-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2C12,2 5,10 5,15C5,18.86 8.14,22 12,22C15.86,22 19,18.86 19,15C19,10 12,2 12,2Z"/></svg><div class="w-full h-1.5 bg-gray-300 rounded-full overflow-hidden"><div id="bar-fuel" class="h-full bg-blue-500 progress-bar w-full"></div></div></div>
-                <div class="flex flex-col items-center w-1/5"><svg class="w-4 h-4 text-green-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M7,22A2,2 0 0,1 5,20V19A2,2 0 0,1 7,17H17A2,2 0 0,1 19,19V20A2,2 0 0,1 17,22H7M7,15A2,2 0 0,1 5,13V12A2,2 0 0,1 7,10H17A2,2 0 0,1 19,12V13A2,2 0 0,1 17,15H7Z"/></svg><div class="w-full h-1.5 bg-gray-300 rounded-full overflow-hidden"><div id="bar-clean" class="h-full bg-green-500 progress-bar w-full"></div></div></div>
-                <div class="flex flex-col items-center w-1/5"><svg class="w-4 h-4 text-yellow-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11,15H6L13,1V9H18L11,23V15Z"/></svg><div class="w-full h-1.5 bg-gray-300 rounded-full overflow-hidden"><div id="bar-energy" class="h-full bg-yellow-400 progress-bar w-full"></div></div></div>
-                <div class="flex flex-col items-center w-1/5"><svg class="w-4 h-4 text-pink-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M15.5,8A1.5,1.5 0 0,0 14,9.5A1.5,1.5 0 0,0 15.5,11A1.5,1.5 0 0,0 17,9.5A1.5,1.5 0 0,0 15.5,8M9.5,11A1.5,1.5 0 0,0 11,9.5A1.5,1.5 0 0,0 9.5,8A1.5,1.5 0 0,0 8,9.5A1.5,1.5 0 0,0 9.5,11M12,17.5C14.33,17.5 16.3,16.04 17.11,14H6.89C7.7,16.04 9.67,17.5 12,17.5Z"/></svg><div class="w-full h-1.5 bg-gray-300 rounded-full overflow-hidden"><div id="bar-fun" class="h-full bg-pink-500 progress-bar w-full"></div></div></div>
+        </div>
+        
+        <!-- BARRAS DE STATUS -->
+        <div class="bg-gray-100 w-full border-b-4 border-gray-300 z-40 relative shadow-sm shrink-0">
+            <div class="w-full p-2 flex justify-between items-center px-4">
+                <div class="flex flex-col items-center w-1/5"><svg class="w-5 h-5 text-blue-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12,2C12,2 5,10 5,15C5,18.86 8.14,22 12,22C15.86,22 19,18.86 19,15C19,10 12,2 12,2Z"/></svg><div class="w-full h-2 bg-gray-300 rounded-full overflow-hidden"><div id="bar-fuel" class="h-full bg-blue-500 progress-bar w-full"></div></div></div>
+                <div class="flex flex-col items-center w-1/5"><svg class="w-5 h-5 text-green-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M7,22A2,2 0 0,1 5,20V19A2,2 0 0,1 7,17H17A2,2 0 0,1 19,19V20A2,2 0 0,1 17,22H7M7,15A2,2 0 0,1 5,13V12A2,2 0 0,1 7,10H17A2,2 0 0,1 19,12V13A2,2 0 0,1 17,15H7Z"/></svg><div class="w-full h-2 bg-gray-300 rounded-full overflow-hidden"><div id="bar-clean" class="h-full bg-green-500 progress-bar w-full"></div></div></div>
+                <div class="flex flex-col items-center w-1/5"><svg class="w-5 h-5 text-yellow-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11,15H6L13,1V9H18L11,23V15Z"/></svg><div class="w-full h-2 bg-gray-300 rounded-full overflow-hidden"><div id="bar-energy" class="h-full bg-yellow-400 progress-bar w-full"></div></div></div>
+                <div class="flex flex-col items-center w-1/5"><svg class="w-5 h-5 text-pink-500 mb-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M15.5,8A1.5,1.5 0 0,0 14,9.5A1.5,1.5 0 0,0 15.5,11A1.5,1.5 0 0,0 17,9.5A1.5,1.5 0 0,0 15.5,8M9.5,11A1.5,1.5 0 0,0 11,9.5A1.5,1.5 0 0,0 9.5,8A1.5,1.5 0 0,0 8,9.5A1.5,1.5 0 0,0 9.5,11M12,17.5C14.33,17.5 16.3,16.04 17.11,14H6.89C7.7,16.04 9.67,17.5 12,17.5Z"/></svg><div class="w-full h-2 bg-gray-300 rounded-full overflow-hidden"><div id="bar-fun" class="h-full bg-pink-500 progress-bar w-full"></div></div></div>
             </div>
         </div>
 
-        <!-- AMBIENTES & CENA (ESTRUTURA RESPONSIVA PERFEITA) -->
+        <!-- AMBIENTES & CENA (ESTRUTURA RESPONSIVA PERFEITA E INFALÍVEL) -->
         <div class="flex-1 relative flex flex-col w-full overflow-hidden">
             
-            <!-- PAREDE (60% do ecrã) -->
+            <!-- PAREDE (60% do espaço disponível) -->
             <div class="h-[60%] w-full relative room-wall border-b-[6px] border-black/10 z-0">
-                <div id="room-title" class="absolute top-4 left-1/2 -translate-x-1/2 bg-white/80 px-5 py-1 rounded-full font-black text-gray-800 text-sm tracking-widest uppercase shadow-md z-10 backdrop-blur-md border border-white/50">Cozinha</div>
-                <div id="thought-bubble" class="absolute top-14 left-1/2 -translate-x-1/2 bg-white px-3 py-2 rounded-xl text-xs font-bold text-gray-700 shadow-lg opacity-0 transition-opacity duration-500 z-10 pointer-events-none before:content-[''] before:absolute before:-bottom-2 before:left-1/2 before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-white">Estou feliz!</div>
+                <div id="room-title" class="absolute top-4 left-1/2 -translate-x-1/2 bg-white/80 px-6 py-2 rounded-full font-black text-gray-800 text-sm tracking-widest uppercase shadow-md z-10 backdrop-blur-md border border-white/50">Cozinha</div>
+                <div id="thought-bubble" class="absolute top-16 left-1/2 -translate-x-1/2 bg-white px-4 py-3 rounded-xl text-sm font-bold text-gray-700 shadow-lg opacity-0 transition-opacity duration-500 z-10 pointer-events-none before:content-[''] before:absolute before:-bottom-3 before:left-1/2 before:-translate-x-1/2 before:border-8 before:border-transparent before:border-t-white">Estou feliz!</div>
             </div>
             
-            <!-- CHÃO (40% do ecrã) -->
+            <!-- CHÃO (40% do espaço disponível) -->
             <div class="h-[40%] w-full relative room-floor z-0"></div>
 
             <div class="absolute inset-0 night-overlay z-30 flex justify-center items-center">
-                <div id="zzz-container" class="hidden absolute top-20 right-20 text-blue-300 font-black text-4xl"><span class="absolute zzz-anim" style="animation-delay: 0s;">Z</span><span class="absolute zzz-anim text-3xl" style="animation-delay: 0.5s; right: -15px; top: -15px;">z</span><span class="absolute zzz-anim text-2xl" style="animation-delay: 1s; right: -25px; top: -25px;">z</span></div>
+                <div id="zzz-container" class="hidden absolute top-[15%] right-[15%] text-blue-300 font-black text-5xl"><span class="absolute zzz-anim" style="animation-delay: 0s;">Z</span><span class="absolute zzz-anim text-4xl" style="animation-delay: 0.5s; right: -20px; top: -20px;">z</span><span class="absolute zzz-anim text-3xl" style="animation-delay: 1s; right: -35px; top: -35px;">z</span></div>
             </div>
 
-            <!-- CAMADA DOS MÓVEIS (Ancorados à linha exata que divide a parede do chão, em h-[60%]) -->
-            <div id="furniture-container" class="absolute top-0 left-0 w-full h-[60%] z-10 pointer-events-none">
+            <!-- CAMADA DOS MÓVEIS (O Container ocupa todo o ecrã, tudo é ancorado à marca dos 38% debaixo para cima - A Linha do Chão!) -->
+            <div id="furniture-container" class="absolute inset-0 w-full h-full z-10 pointer-events-none">
                 
                 <!-- COZINHA -->
                 <div id="room-kitchen" class="furniture-group w-full h-full relative">
-                    <!-- Geladeira (bottom-0 e translate-y empurra-a para dentro do chão de forma perspetiva) -->
-                    <div id="fridge" onclick="toggleFridge()" class="absolute bottom-0 translate-y-6 left-[8%] w-[100px] h-[200px] sm:w-28 sm:h-56 bg-gray-100 border-4 border-gray-400 rounded-t-xl flex flex-col shadow-lg pointer-events-auto cursor-pointer transition-all ground-shadow" style="perspective: 500px;">
+                    <!-- Geladeira -->
+                    <div id="fridge" onclick="toggleFridge()" class="absolute bottom-[38%] left-[8%] w-24 h-48 sm:w-28 sm:h-56 bg-gray-100 border-4 border-gray-400 rounded-t-xl flex flex-col shadow-lg pointer-events-auto cursor-pointer ground-shadow" style="perspective: 800px;">
                         <div class="absolute inset-0 flex flex-col p-2 gap-2 z-0 pt-6">
                             <div class="w-full h-2 bg-sky-200 mt-2"></div><div class="w-full h-2 bg-sky-200 mt-6"></div>
-                            <div class="flex gap-1 absolute bottom-2"><div class="w-4 h-6 bg-red-400 rounded-sm"></div><div class="w-4 h-8 bg-green-400 rounded-sm"></div></div>
+                            <div class="flex gap-2 absolute bottom-3"><div class="w-5 h-8 bg-red-400 rounded-sm"></div><div class="w-5 h-10 bg-green-400 rounded-sm"></div></div>
                         </div>
                         <div id="fridge-top" class="h-[40%] w-full relative bg-gradient-to-r from-gray-100 to-gray-300 border-b-4 border-gray-400 transition-all duration-500 origin-left z-10 rounded-t-lg">
                             <div class="absolute right-2 top-1/2 -translate-y-1/2 w-2 h-8 bg-gray-400 rounded-full"></div>
@@ -173,91 +154,117 @@
                         <div id="fridge-bottom" class="flex-1 w-full relative bg-gradient-to-r from-gray-100 to-gray-300 transition-all duration-500 origin-left z-10">
                             <div class="absolute right-2 top-4 w-2 h-12 bg-gray-400 rounded-full"></div>
                         </div>
-                        <div class="absolute -bottom-3 left-2 w-3 h-3 bg-gray-500"></div><div class="absolute -bottom-3 right-2 w-3 h-3 bg-gray-500"></div>
+                        <div class="absolute -bottom-2 left-2 w-3 h-2 bg-gray-500"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-gray-500"></div>
                     </div>
                     <!-- Balcão -->
-                    <div class="absolute bottom-0 translate-y-4 right-[5%] w-[120px] h-[80px] sm:w-36 sm:h-28 bg-orange-200 border-4 border-orange-400 rounded-t-lg shadow-lg ground-shadow wood-texture">
-                        <div class="w-full h-4 bg-gray-300 border-b-4 border-orange-400 rounded-t-lg"></div><div class="w-full mt-2 h-1 bg-orange-300"></div><div class="w-full mt-2 h-1 bg-orange-300"></div>
-                        <div class="absolute -bottom-3 left-2 w-3 h-3 bg-orange-500"></div><div class="absolute -bottom-3 right-2 w-3 h-3 bg-orange-500"></div>
+                    <div class="absolute bottom-[38%] right-[5%] w-32 h-24 sm:w-40 sm:h-32 bg-orange-200 border-4 border-orange-400 rounded-t-lg shadow-lg ground-shadow wood-texture">
+                        <div class="w-full h-4 sm:h-6 bg-gray-300 border-b-4 border-orange-400 rounded-t-lg"></div><div class="w-full mt-3 h-1 bg-orange-300"></div><div class="w-full mt-3 h-1 bg-orange-300"></div>
+                        <div class="absolute -bottom-2 left-2 w-3 h-2 bg-orange-500"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-orange-500"></div>
                     </div>
                 </div>
                 
-                <!-- BANHEIRO -->
+                <!-- BANHEIRO (Banheira e Chuveiro unidos) -->
                 <div id="room-bathroom" class="furniture-group w-full h-full relative hidden">
-                    <div class="absolute bottom-0 translate-y-4 left-1/2 -translate-x-1/2 w-56 sm:w-64 h-20 sm:h-24 bg-white border-4 border-gray-300 rounded-b-full shadow-xl flex items-end justify-center pb-2 ground-shadow">
-                        <div class="absolute -bottom-2 left-6 w-4 h-4 bg-gray-300 rounded-full"></div><div class="absolute -bottom-2 right-6 w-4 h-4 bg-gray-300 rounded-full"></div>
+                    <div class="absolute bottom-[38%] left-1/2 -translate-x-1/2 w-64 h-48 flex items-end justify-center pointer-events-none">
+                        <!-- Chuveiro posicionado em relação à banheira -->
+                        <div class="absolute bottom-20 right-8 w-4 h-28 bg-gray-300 border-x-2 border-gray-500"></div>
+                        <div class="absolute bottom-[190px] right-8 w-16 h-4 bg-gray-300 border-y-2 border-l-2 border-gray-500 rounded-l-full -ml-12"></div>
+                        <div class="absolute bottom-[180px] right-[65px] w-10 h-5 bg-gray-400 rounded-b-full border-2 border-gray-600"></div>
+                        <div id="shower-fx" class="absolute bottom-16 right-[65px] w-10 h-32 hidden z-0"><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-1 shower-water" style="animation-delay: 0s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-4 shower-water" style="animation-delay: 0.2s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-7 shower-water" style="animation-delay: 0.4s;"></div></div>
+                        
+                        <!-- Base da Banheira -->
+                        <div class="relative w-full h-20 bg-white border-4 border-gray-300 rounded-b-full shadow-xl flex items-end justify-center z-10 ground-shadow">
+                            <div class="absolute -bottom-2 left-6 w-4 h-4 bg-gray-300 rounded-full"></div><div class="absolute -bottom-2 right-6 w-4 h-4 bg-gray-300 rounded-full"></div>
+                        </div>
                     </div>
-                    <div class="absolute bottom-20 sm:bottom-24 right-[30%] w-4 h-24 bg-gray-300 border-x-2 border-gray-500"></div><div class="absolute bottom-[104px] sm:bottom-[120px] right-[30%] w-16 h-4 bg-gray-300 border-y-2 border-l-2 border-gray-500 rounded-l-full -ml-12"></div><div class="absolute bottom-[104px] sm:bottom-[120px] right-[35%] w-8 h-4 bg-gray-400 rounded-b-full border-2 border-gray-600"></div>
-                    <div id="shower-fx" class="absolute bottom-6 right-[35%] w-8 h-32 hidden"><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-1 shower-water" style="animation-delay: 0s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-4 shower-water" style="animation-delay: 0.2s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-7 shower-water" style="animation-delay: 0.4s;"></div></div>
                 </div>
                 
                 <!-- QUARTO -->
                 <div id="room-bedroom" class="furniture-group w-full h-full relative hidden pointer-events-auto">
-                    <!-- GUARDA-ROUPA FÍSICO (Ancorado no bottom-0 com translate-y) -->
-                    <div onclick="openShop(true)" class="absolute bottom-0 translate-y-8 left-[6%] w-[110px] sm:w-32 h-[220px] sm:h-[260px] bg-[#78350f] border-4 border-[#451a03] rounded-t-lg shadow-2xl cursor-pointer active:scale-[0.98] transition-transform flex flex-col relative group hover:brightness-110 wood-texture ground-shadow">
-                        <div class="w-full bg-[#451a03] text-amber-200 text-[9px] text-center font-bold tracking-widest py-0.5 border-b-2 border-black/50 z-10">ROUPAS</div>
+                    <!-- GUARDA-ROUPA (Fixo em bottom-[38%]) -->
+                    <div onclick="openShop(true)" class="absolute bottom-[38%] left-[5%] w-28 h-52 sm:w-32 sm:h-64 bg-amber-800 border-4 border-amber-950 rounded-t-lg shadow-2xl cursor-pointer active:scale-[0.98] transition-transform flex flex-col group hover:brightness-110 wood-texture ground-shadow">
+                        <div class="w-full bg-amber-950 text-amber-200 text-[10px] text-center font-bold tracking-widest py-1 border-b-2 border-black/50 z-10 rounded-t-sm">ROUPAS</div>
                         <div class="flex-1 flex w-full">
-                            <div class="w-1/2 h-full border-r-2 border-black/40 bg-[#92400e]/80 relative"><div class="absolute top-1/2 right-1 -translate-y-1/2 w-2 h-7 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
-                            <div class="w-1/2 h-full bg-[#92400e]/80 relative"><div class="absolute top-1/2 left-1 -translate-y-1/2 w-2 h-7 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
+                            <div class="w-1/2 h-full border-r-2 border-black/40 bg-amber-700/80 relative"><div class="absolute top-1/2 right-1 -translate-y-1/2 w-2.5 h-8 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
+                            <div class="w-1/2 h-full bg-amber-700/80 relative"><div class="absolute top-1/2 left-1 -translate-y-1/2 w-2.5 h-8 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
                         </div>
-                        <div class="absolute -bottom-3 left-2 w-3 h-3 bg-[#451a03]"></div><div class="absolute -bottom-3 right-2 w-3 h-3 bg-[#451a03]"></div>
+                        <div class="absolute -bottom-2 left-2 w-3 h-2 bg-amber-950"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-amber-950"></div>
                     </div>
                     
-                    <div id="bedroom-window" class="absolute top-[10%] right-[10%] w-16 sm:w-20 h-20 sm:h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner">
-                        <div class="w-1/2 h-1/2 border-r-2 border-b-2 border-gray-600 relative"><div id="win-star1" class="hidden absolute top-1 left-2 w-1 h-1 bg-white rounded-full shadow-[0_0_2px_#fff]"></div></div>
-                        <div class="w-1/2 h-1/2 border-b-2 border-gray-600 relative"><div id="win-sun-moon" class="absolute top-2 right-2 w-5 h-5 sm:w-6 sm:h-6 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fde047]"></div></div>
+                    <div id="bedroom-window" class="absolute top-[10%] right-[10%] w-20 h-24 sm:w-24 sm:h-28 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner">
+                        <div class="w-1/2 h-1/2 border-r-2 border-b-2 border-gray-600 relative"><div id="win-star1" class="hidden absolute top-2 left-3 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_3px_#fff]"></div></div>
+                        <div class="w-1/2 h-1/2 border-b-2 border-gray-600 relative"><div id="win-sun-moon" class="absolute top-2 right-2 w-6 h-6 sm:w-8 sm:h-8 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_12px_#fde047]"></div></div>
                         <div class="w-1/2 h-1/2 border-r-2 border-gray-600"></div>
-                        <div class="w-1/2 h-1/2 relative"><div id="win-star2" class="hidden absolute bottom-2 left-2 w-1 h-1 bg-white rounded-full shadow-[0_0_2px_#fff]"></div></div>
+                        <div class="w-1/2 h-1/2 relative"><div id="win-star2" class="hidden absolute bottom-3 left-3 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_3px_#fff]"></div></div>
                     </div>
-                    <!-- CAMA (Ancorada no bottom-0, mesma linha exata do armário) -->
-                    <div class="absolute bottom-0 translate-y-4 right-[5%] w-36 sm:w-44 h-16 sm:h-20 bg-indigo-500 border-4 border-indigo-800 rounded-t-xl rounded-bl-md flex items-end shadow-xl pointer-events-none ground-shadow">
-                        <div class="absolute top-2 right-4 w-10 sm:w-14 h-6 sm:h-8 bg-white border-2 border-gray-300 rounded-lg shadow-sm z-10"></div><div class="w-3/4 h-full bg-indigo-400 border-r-4 border-indigo-800 rounded-tl-xl rounded-bl-md shadow-inner"></div>
+                    <!-- CAMA (Fixa em bottom-[38%]) -->
+                    <div class="absolute bottom-[38%] right-[5%] w-40 h-16 sm:w-48 sm:h-20 bg-indigo-500 border-4 border-indigo-800 rounded-t-xl rounded-bl-md flex items-end shadow-xl pointer-events-none ground-shadow">
+                        <div class="absolute top-2 right-4 w-12 h-6 sm:w-16 sm:h-8 bg-white border-2 border-gray-300 rounded-lg shadow-sm z-10"></div><div class="w-3/4 h-full bg-indigo-400 border-r-4 border-indigo-800 rounded-tl-xl rounded-bl-md shadow-inner"></div>
                         <div class="absolute -bottom-2 left-2 w-3 h-2 bg-indigo-900"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-indigo-900"></div>
                     </div>
                 </div>
                 
                 <!-- SALA -->
                 <div id="room-livingroom" class="furniture-group w-full h-full relative hidden pointer-events-auto">
-                    <div class="absolute bottom-0 translate-y-10 left-1/2 -translate-x-1/2 w-64 sm:w-72 h-12 sm:h-14 bg-red-400/80 rounded-[100%] shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)] border-2 border-red-500/40 pointer-events-none backdrop-blur-sm"></div>
-                    <!-- RACK -->
-                    <div class="absolute bottom-0 translate-y-4 left-[8%] w-[120px] sm:w-36 h-[40px] sm:h-14 bg-amber-800 border-4 border-amber-950 rounded-md shadow-lg flex justify-center items-start pointer-events-none ground-shadow wood-texture">
-                        <div class="w-8 sm:w-10 h-4 sm:h-5 bg-gray-800 -mt-4 sm:-mt-5 border-x-2 border-t-2 border-gray-900"></div>
-                        <div onclick="toggleTV()" class="absolute bottom-full mb-3 w-[100px] sm:w-32 h-[75px] sm:h-24 bg-gray-900 border-[5px] border-black rounded-lg flex items-center justify-center overflow-hidden shadow-2xl pointer-events-auto cursor-pointer group">
+                    <div class="absolute bottom-[34%] left-1/2 -translate-x-1/2 w-64 sm:w-80 h-12 sm:h-16 bg-red-400/80 rounded-[100%] shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)] border-2 border-red-500/40 pointer-events-none backdrop-blur-sm"></div>
+                    <div class="absolute bottom-[38%] left-[10%] w-36 h-12 sm:w-44 sm:h-16 bg-amber-800 border-4 border-amber-950 rounded-md shadow-lg flex justify-center items-start pointer-events-none ground-shadow wood-texture">
+                        <div class="w-10 h-5 bg-gray-800 -mt-5 border-x-2 border-t-2 border-gray-900"></div>
+                        <div onclick="toggleTV()" class="absolute bottom-full mb-3 w-28 h-20 sm:w-36 sm:h-28 bg-gray-900 border-[5px] border-black rounded-lg flex items-center justify-center overflow-hidden shadow-2xl pointer-events-auto cursor-pointer group">
                             <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/20 to-transparent z-10 pointer-events-none"></div>
                             <div id="tv-screen" class="w-full h-full bg-black transition-colors duration-300 group-active:scale-95"></div>
-                            <div class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full z-20 shadow-[0_0_4px_#ef4444]"></div>
+                            <div class="absolute bottom-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full z-20 shadow-[0_0_4px_#ef4444]"></div>
                         </div>
                         <div class="absolute -bottom-2 left-2 w-3 h-2 bg-amber-950"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-amber-950"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- PERSONAGEM ISQUEIRO (Ancorado na linha exata de horizonte) -->
-            <div class="absolute top-0 left-0 w-full h-[60%] z-20 pointer-events-none flex justify-center items-end">
-                <div class="transform scale-75 origin-bottom translate-y-[20%] transition-transform duration-300 flex justify-center items-center">
-                    <div id="lighter-character" class="relative breathing pointer-events-auto cursor-pointer drop-shadow-2xl transition-transform active:scale-95">
-                        <div id="flame" class="absolute -top-16 left-1/2 -translate-x-1/2 w-12 h-16 flame-active z-20 transition-all duration-300">
-                            <svg viewBox="0 0 30 40" class="w-full h-full drop-shadow-md"><path d="M15 0 C15 0, 30 15, 30 25 C30 35, 22 40, 15 40 C8 40, 0 35, 0 25 C0 15, 15 0, 15 0 Z" fill="#ff7a00"/><path d="M15 10 C15 10, 24 20, 24 28 C24 34, 19 38, 15 38 C11 38, 6 34, 6 28 C6 20, 15 10, 15 10 Z" fill="#ffc800"/><path d="M15 20 C15 20, 19 26, 19 31 C19 34, 17 36, 15 36 C13 36, 11 34, 11 31 C11 26, 15 20, 15 20 Z" fill="#ffffff"/></svg>
+            <!-- PERSONAGEM ISQUEIRO (Tamanho Nativo e Perfeitamente Ancorado no Chão) -->
+            <div class="absolute inset-x-0 bottom-[35%] w-full flex justify-center z-20 pointer-events-none">
+                
+                <div id="lighter-character" class="relative breathing pointer-events-auto cursor-pointer drop-shadow-2xl active:scale-95 transition-transform">
+                    <!-- Flame -->
+                    <div id="flame" class="absolute -top-12 left-1/2 -translate-x-1/2 w-10 h-14 flame-active z-20 transition-all duration-300">
+                        <svg viewBox="0 0 30 40" class="w-full h-full drop-shadow-md"><path d="M15 0 C15 0, 30 15, 30 25 C30 35, 22 40, 15 40 C8 40, 0 35, 0 25 C0 15, 15 0, 15 0 Z" fill="#ff7a00"/><path d="M15 10 C15 10, 24 20, 24 28 C24 34, 19 38, 15 38 C11 38, 6 34, 6 28 C6 20, 15 10, 15 10 Z" fill="#ffc800"/><path d="M15 20 C15 20, 19 26, 19 31 C19 34, 17 36, 15 36 C13 36, 11 34, 11 31 C11 26, 15 20, 15 20 Z" fill="#ffffff"/></svg>
+                    </div>
+                    
+                    <!-- Hat -->
+                    <div id="equipped-hat-container" class="absolute -top-10 left-1/2 -translate-x-1/2 w-16 h-12 z-30 pointer-events-none flex justify-center items-end"></div>
+                    
+                    <!-- Button & Roller -->
+                    <div class="absolute -top-2.5 left-1 w-5 h-3 bg-red-500 border-2 border-black rounded-t-sm z-10 shadow-[inset_0_2px_4px_rgba(255,255,255,0.4)]"></div>
+                    <div class="absolute -top-3 right-1 w-5 h-6 bg-gray-700 border-2 border-black rounded-full z-10 shadow-inner flex flex-col justify-evenly py-0.5 items-center">
+                        <div class="w-full h-[1.5px] bg-black"></div><div class="w-full h-[1.5px] bg-black"></div><div class="w-full h-[1.5px] bg-black"></div>
+                    </div>
+                    
+                    <!-- Metal Cap -->
+                    <div class="w-24 h-12 metal-cap border-4 border-b-0 border-black rounded-t-xl relative z-0 flex justify-center items-center overflow-hidden shadow-sm">
+                        <div class="flex gap-1.5 mt-3">
+                            <div class="w-1.5 h-3 bg-gray-800 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]"></div>
+                            <div class="w-1.5 h-3 bg-gray-800 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]"></div>
+                            <div class="w-1.5 h-3 bg-gray-800 rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]"></div>
                         </div>
-                        <div id="equipped-hat-container" class="absolute -top-12 left-1/2 -translate-x-1/2 w-20 h-16 z-30 pointer-events-none flex justify-center items-end"></div>
-                        <div class="absolute -top-3 left-2 w-6 h-4 bg-red-500 border-2 border-black rounded-t-sm z-10 shadow-[inset_0_2px_4px_rgba(255,255,255,0.4)]"></div>
-                        <div class="absolute -top-4 right-1 w-6 h-8 bg-gray-700 border-2 border-black rounded-full z-10 shadow-inner"><div class="w-full h-[2px] bg-black mt-1"></div><div class="w-full h-[2px] bg-black mt-1"></div><div class="w-full h-[2px] bg-black mt-1"></div><div class="w-full h-[2px] bg-black mt-1"></div></div>
-                        
-                        <div class="w-32 h-16 metal-cap border-4 border-b-0 border-black rounded-t-xl relative z-0 flex justify-center items-center overflow-hidden shadow-sm">
-                            <div class="flex gap-2 mt-4"><div class="w-2 h-4 bg-gray-800 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></div><div class="w-2 h-4 bg-gray-800 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></div><div class="w-2 h-4 bg-gray-800 rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></div></div>
+                    </div>
+                    
+                    <!-- Body -->
+                    <div class="w-24 h-32 border-4 border-black rounded-b-xl relative overflow-hidden dynamic-lighter-bg shadow-[inset_0_0_15px_rgba(0,0,0,0.15)]">
+                        <!-- Gas Level -->
+                        <div id="gas-level" class="absolute bottom-0 left-0 w-full dynamic-lighter-fill transition-all duration-1000 border-t-2 border-white/30" style="height: 100%;">
+                            <div class="absolute top-0 w-full h-1.5 bg-white opacity-20"></div>
                         </div>
                         
-                        <div class="w-32 h-40 border-4 border-black rounded-b-xl relative overflow-hidden dynamic-lighter-bg shadow-[inset_0_0_20px_rgba(0,0,0,0.15)]">
-                            <div id="gas-level" class="absolute bottom-0 left-0 w-full dynamic-lighter-fill transition-all duration-1000 ease-in-out border-t-2 border-white/30" style="height: 100%;"><div class="absolute top-0 w-full h-2 bg-white opacity-20"></div></div>
-                            <div id="equipped-shirt-container" class="absolute inset-0 z-15 pointer-events-none flex justify-center items-center mt-6"></div>
-                            <div id="dirt" class="absolute inset-0 dirt-overlay z-20"></div>
-                            <div class="absolute inset-0 z-20 flex flex-col items-center justify-center pt-4">
-                                <div class="flex gap-5">
-                                    <div id="eye-left" class="w-4 h-5 bg-black rounded-full relative transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"><div class="absolute top-1 right-1 w-1.5 h-1.5 bg-white rounded-full"></div></div>
-                                    <div id="eye-right" class="w-4 h-5 bg-black rounded-full relative transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"><div class="absolute top-1 right-1 w-1.5 h-1.5 bg-white rounded-full"></div></div>
-                                </div>
-                                <div id="mouth" class="mt-3 w-6 h-3 border-b-4 border-black rounded-b-full transition-all duration-300"></div>
+                        <!-- Clothes -->
+                        <div id="equipped-shirt-container" class="absolute inset-0 z-15 pointer-events-none flex justify-center items-center mt-4"></div>
+                        <!-- Dirt -->
+                        <div id="dirt" class="absolute inset-0 dirt-overlay z-20"></div>
+                        
+                        <!-- Face -->
+                        <div class="absolute inset-0 z-20 flex flex-col items-center justify-center pt-3">
+                            <div class="flex gap-4">
+                                <div id="eye-left" class="w-3 h-4 bg-black rounded-full relative transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"><div class="absolute top-0.5 right-0.5 w-1 h-1 bg-white rounded-full"></div></div>
+                                <div id="eye-right" class="w-3 h-4 bg-black rounded-full relative transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"><div class="absolute top-0.5 right-0.5 w-1 h-1 bg-white rounded-full"></div></div>
                             </div>
+                            <div id="mouth" class="mt-2 w-4 h-2 border-b-4 border-black rounded-b-full transition-all duration-300"></div>
                         </div>
                     </div>
                 </div>
@@ -265,113 +272,113 @@
 
             <!-- BOTÕES DE AÇÃO FIXOS NA BASE -->
             <div class="absolute bottom-4 left-0 w-full flex justify-center z-40 pointer-events-none">
-                <button id="action-kitchen" onclick="feed()" class="pointer-events-auto action-btn bg-blue-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(29,78,216)] flex items-center gap-2 border-2 border-blue-700 uppercase transition-colors hover:bg-blue-400">Abastecer</button>
-                <button id="action-bathroom" onclick="clean()" class="hidden pointer-events-auto action-btn bg-green-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(21,128,61)] flex items-center gap-2 border-2 border-green-700 uppercase transition-colors hover:bg-green-400">Dar Banho</button>
-                <button id="action-bedroom" onclick="toggleSleep()" class="hidden pointer-events-auto action-btn bg-indigo-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(67,56,202)] flex items-center gap-2 border-2 border-indigo-700 uppercase transition-colors hover:bg-indigo-400"><span id="btn-sleep-text">Dormir</span></button>
-                <button id="action-livingroom" onclick="openMinigamesHub()" class="hidden pointer-events-auto action-btn bg-pink-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(190,24,93)] flex items-center gap-2 border-2 border-pink-700 uppercase transition-colors hover:bg-pink-400">Jogar</button>
+                <button id="action-kitchen" onclick="feed()" class="pointer-events-auto action-btn bg-blue-500 text-white font-black px-10 py-3 md:px-12 md:py-4 rounded-full shadow-[0_5px_0_rgb(29,78,216)] flex items-center gap-2 border-2 border-blue-700 uppercase transition-colors hover:bg-blue-400">Abastecer</button>
+                <button id="action-bathroom" onclick="clean()" class="hidden pointer-events-auto action-btn bg-green-500 text-white font-black px-10 py-3 md:px-12 md:py-4 rounded-full shadow-[0_5px_0_rgb(21,128,61)] flex items-center gap-2 border-2 border-green-700 uppercase transition-colors hover:bg-green-400">Dar Banho</button>
+                <button id="action-bedroom" onclick="toggleSleep()" class="hidden pointer-events-auto action-btn bg-indigo-500 text-white font-black px-10 py-3 md:px-12 md:py-4 rounded-full shadow-[0_5px_0_rgb(67,56,202)] flex items-center gap-2 border-2 border-indigo-700 uppercase transition-colors hover:bg-indigo-400"><span id="btn-sleep-text">Dormir</span></button>
+                <button id="action-livingroom" onclick="openMinigamesHub()" class="hidden pointer-events-auto action-btn bg-pink-500 text-white font-black px-10 py-3 md:px-12 md:py-4 rounded-full shadow-[0_5px_0_rgb(190,24,93)] flex items-center gap-2 border-2 border-pink-700 uppercase transition-colors hover:bg-pink-400">Jogar</button>
             </div>
             
-            <div id="feedback-text" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-black text-white outline-4 drop-shadow-xl opacity-0 pointer-events-none transition-all duration-500 z-50"></div>
+            <div id="feedback-text" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-black text-white outline-4 drop-shadow-xl opacity-0 pointer-events-none transition-all duration-500 z-50"></div>
         </div>
 
-        <!-- NAVEGAÇÃO -->
-        <div class="bg-white border-t-4 border-gray-200 w-full z-40 relative action-layer shadow-[0_-4px_10px_rgba(0,0,0,0.05)] shrink-0">
-            <div class="max-w-xl mx-auto flex justify-around items-center p-2 sm:pb-3">
+        <!-- NAVEGAÇÃO BASE -->
+        <div class="bg-white w-full border-t-4 border-gray-200 z-40 relative action-layer shadow-[0_-4px_10px_rgba(0,0,0,0.05)] shrink-0">
+            <div class="flex justify-around items-center p-2 sm:pb-3 w-full">
                 <button onclick="changeRoom('kitchen')" id="nav-kitchen" class="nav-btn active flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500 font-bold uppercase hover:text-blue-500">
-                    <svg class="w-6 h-6 sm:w-7 sm:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M18.06 22.94C16.89 24.11 15 24.11 13.83 22.94L8.17 17.28C7.6 16.71 7.29 15.95 7.29 15.15C7.29 14.34 7.6 13.58 8.17 13.02L13.83 7.36C15 6.19 16.89 6.19 18.06 7.36L19.47 8.78L22.3 5.95L23.71 7.36L20.88 10.19L22.3 11.61L18.06 15.85C17.67 16.24 17.67 16.87 18.06 17.26C18.45 17.65 19.08 17.65 19.47 17.26L23.71 21.5L22.3 22.91L18.06 18.68C17.67 18.29 17.04 18.29 16.65 18.68C16.26 19.07 16.26 19.7 16.65 20.09L18.06 21.5M10.17 11L6.17 7L11.83 1.34C13 0.17 14.89 0.17 16.06 1.34L17.47 2.75L14.64 5.58L16.06 7L13.23 9.83L11.82 8.41L10.41 9.83C10.02 10.22 10.02 10.85 10.41 11.24L10.17 11M2.05 13.84L7.71 19.5L6.29 20.91L3.46 18.08L2.05 19.5L0.64 18.08L3.46 15.25L2.05 13.84Z"/></svg><span class="text-[9px] sm:text-[10px]">Cozinha</span>
+                    <svg class="w-6 h-6 md:w-7 md:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M18.06 22.94C16.89 24.11 15 24.11 13.83 22.94L8.17 17.28C7.6 16.71 7.29 15.95 7.29 15.15C7.29 14.34 7.6 13.58 8.17 13.02L13.83 7.36C15 6.19 16.89 6.19 18.06 7.36L19.47 8.78L22.3 5.95L23.71 7.36L20.88 10.19L22.3 11.61L18.06 15.85C17.67 16.24 17.67 16.87 18.06 17.26C18.45 17.65 19.08 17.65 19.47 17.26L23.71 21.5L22.3 22.91L18.06 18.68C17.67 18.29 17.04 18.29 16.65 18.68C16.26 19.07 16.26 19.7 16.65 20.09L18.06 21.5M10.17 11L6.17 7L11.83 1.34C13 0.17 14.89 0.17 16.06 1.34L17.47 2.75L14.64 5.58L16.06 7L13.23 9.83L11.82 8.41L10.41 9.83C10.02 10.22 10.02 10.85 10.41 11.24L10.17 11M2.05 13.84L7.71 19.5L6.29 20.91L3.46 18.08L2.05 19.5L0.64 18.08L3.46 15.25L2.05 13.84Z"/></svg><span class="text-[10px]">Cozinha</span>
                 </button>
                 <button onclick="changeRoom('bathroom')" id="nav-bathroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500 font-bold uppercase hover:text-green-500">
-                    <svg class="w-6 h-6 sm:w-7 sm:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4A2,2 0 0,0 10,6H8A4,4 0 0,1 12,2A4,4 0 0,1 16,6H14A2,2 0 0,0 12,4M18,6V8H6V6H18M6,10H18V12H6V10M18,14V16H6V14H18M18,18H6A2,2 0 0,0 4,20V22H20V20A2,2 0 0,0 18,18Z"/></svg><span class="text-[9px] sm:text-[10px]">Banheiro</span>
+                    <svg class="w-6 h-6 md:w-7 md:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4A2,2 0 0,0 10,6H8A4,4 0 0,1 12,2A4,4 0 0,1 16,6H14A2,2 0 0,0 12,4M18,6V8H6V6H18M6,10H18V12H6V10M18,14V16H6V14H18M18,18H6A2,2 0 0,0 4,20V22H20V20A2,2 0 0,0 18,18Z"/></svg><span class="text-[10px]">Banheiro</span>
                 </button>
                 <button onclick="changeRoom('bedroom')" id="nav-bedroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500 font-bold uppercase hover:text-indigo-500">
-                    <svg class="w-6 h-6 sm:w-7 sm:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M19,7H11V14H3V5H1V20H3V17H21V20H23V11A4,4 0 0,0 19,7M7,13A3,3 0 0,0 10,10A3,3 0 0,0 7,7A3,3 0 0,0 4,10A3,3 0 0,0 7,13Z"/></svg><span class="text-[9px] sm:text-[10px]">Quarto</span>
+                    <svg class="w-6 h-6 md:w-7 md:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M19,7H11V14H3V5H1V20H3V17H21V20H23V11A4,4 0 0,0 19,7M7,13A3,3 0 0,0 10,10A3,3 0 0,0 7,7A3,3 0 0,0 4,10A3,3 0 0,0 7,13Z"/></svg><span class="text-[10px]">Quarto</span>
                 </button>
                 <button onclick="changeRoom('livingroom')" id="nav-livingroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500 font-bold uppercase hover:text-pink-500">
-                    <svg class="w-6 h-6 sm:w-7 sm:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M21,6H3C1.89,6 1,6.89 1,8V16A2,2 0 0,0 3,18H7V20H17V18H21A2,2 0 0,0 23,16V8C23,6.89 22.1,6 21,6M21,16H3V8H21V16M8,10H6V12H4V14H6V12H8V14H10V12H8V10M17,14A1,1 0 0,1 16,13A1,1 0 0,1 17,12A1,1 0 0,1 18,13A1,1 0 0,1 17,14M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12Z"/></svg><span class="text-[9px] sm:text-[10px]">Sala</span>
+                    <svg class="w-6 h-6 md:w-7 md:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M21,6H3C1.89,6 1,6.89 1,8V16A2,2 0 0,0 3,18H7V20H17V18H21A2,2 0 0,0 23,16V8C23,6.89 22.1,6 21,6M21,16H3V8H21V16M8,10H6V12H4V14H6V12H8V14H10V12H8V10M17,14A1,1 0 0,1 16,13A1,1 0 0,1 17,12A1,1 0 0,1 18,13A1,1 0 0,1 17,14M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12Z"/></svg><span class="text-[10px]">Sala</span>
                 </button>
             </div>
         </div>
 
         <!-- MODAIS -->
-        <div id="palette-modal" class="hidden absolute inset-0 bg-black/60 z-50 flex flex-col justify-end transition-opacity">
-            <div class="bg-white rounded-t-3xl p-6 h-1/2 overflow-y-auto relative shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
-                <div class="flex justify-between items-center mb-6"><h2 class="text-xl font-black text-gray-800">Cores: <span id="palette-room-name" class="text-blue-500">Cozinha</span></h2><button onclick="togglePalette()" class="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-600 font-bold transition">X</button></div>
-                <h3 class="font-bold text-gray-500 text-sm mb-2 uppercase">Cor da Parede</h3><div class="grid grid-cols-5 gap-3 mb-6" id="wall-colors"></div>
-                <h3 class="font-bold text-gray-500 text-sm mb-2 uppercase">Cor do Chão</h3><div class="grid grid-cols-5 gap-3" id="floor-colors"></div>
+        <div id="palette-modal" class="hidden absolute inset-0 bg-black/60 z-50 flex flex-col justify-center items-center transition-opacity p-4">
+            <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-md relative shadow-2xl">
+                <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-black text-gray-800">Cores: <span id="palette-room-name" class="text-blue-500">Cozinha</span></h2><button onclick="togglePalette()" class="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-600 font-bold transition">X</button></div>
+                <h3 class="font-bold text-gray-500 mb-3 uppercase">Cor da Parede</h3><div class="grid grid-cols-5 md:grid-cols-7 gap-4 mb-8" id="wall-colors"></div>
+                <h3 class="font-bold text-gray-500 mb-3 uppercase">Cor do Chão</h3><div class="grid grid-cols-5 md:grid-cols-7 gap-4" id="floor-colors"></div>
             </div>
         </div>
 
-        <div id="shop-modal" class="hidden absolute inset-0 bg-black/70 z-50 flex flex-col justify-end transition-opacity">
-            <div class="bg-white rounded-t-3xl p-4 h-[75%] max-w-[600px] mx-auto w-full flex flex-col relative shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 id="shop-title" class="text-2xl font-black text-purple-600 flex items-center gap-2">LOJA</h2>
-                    <div id="shop-coin-container" class="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full border-2 border-yellow-400">
-                        <span class="text-yellow-500 font-black">$</span><span id="shop-coin-display" class="font-bold text-gray-800">0</span>
+        <div id="shop-modal" class="hidden absolute inset-0 bg-black/70 z-50 flex flex-col justify-center items-center transition-opacity p-4">
+            <div class="bg-white rounded-3xl p-6 md:p-8 w-full max-w-lg h-[85vh] flex flex-col relative shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="shop-title" class="text-3xl font-black text-purple-600 flex items-center gap-2">LOJA</h2>
+                    <div id="shop-coin-container" class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full border-2 border-yellow-400">
+                        <span class="text-yellow-500 font-black text-xl">$</span><span id="shop-coin-display" class="font-bold text-xl text-gray-800">0</span>
                     </div>
-                    <button onclick="closeShop()" class="w-8 h-8 bg-red-100 hover:bg-red-200 text-red-600 rounded-full font-bold transition">X</button>
+                    <button onclick="closeShop()" class="w-10 h-10 bg-red-100 hover:bg-red-200 text-red-600 rounded-full font-bold transition">X</button>
                 </div>
-                <div class="flex border-b-2 border-gray-200 mb-4">
-                    <button onclick="renderShop('colors')" class="shop-tab active-tab flex-1 py-2 font-bold text-gray-500 border-b-4 border-transparent uppercase text-sm">Cores</button>
-                    <button onclick="renderShop('hats')" class="shop-tab flex-1 py-2 font-bold text-gray-500 border-b-4 border-transparent uppercase text-sm">Chapéus</button>
-                    <button onclick="renderShop('shirts')" class="shop-tab flex-1 py-2 font-bold text-gray-500 border-b-4 border-transparent uppercase text-sm">Roupas</button>
+                <div class="flex border-b-2 border-gray-200 mb-6 shrink-0">
+                    <button onclick="renderShop('colors')" class="shop-tab active-tab flex-1 py-3 font-bold text-gray-500 border-b-4 border-transparent uppercase md:text-lg">Cores</button>
+                    <button onclick="renderShop('hats')" class="shop-tab flex-1 py-3 font-bold text-gray-500 border-b-4 border-transparent uppercase md:text-lg">Chapéus</button>
+                    <button onclick="renderShop('shirts')" class="shop-tab flex-1 py-3 font-bold text-gray-500 border-b-4 border-transparent uppercase md:text-lg">Roupas</button>
                 </div>
-                <div id="shop-grid" class="flex-1 overflow-y-auto shop-scroll grid grid-cols-3 gap-3 pb-6 content-start px-1"></div>
+                <div id="shop-grid" class="flex-1 overflow-y-auto shop-scroll grid grid-cols-3 gap-4 pb-6 content-start px-2"></div>
             </div>
         </div>
 
         <!-- HUB ARCADE -->
         <div id="minigames-hub" class="hidden absolute inset-0 bg-black/80 z-[55] flex flex-col items-center justify-center p-4">
-            <div class="bg-indigo-600 w-full max-w-sm rounded-3xl p-4 shadow-2xl border-4 border-indigo-400 text-center relative h-[85%] flex flex-col">
-                <button onclick="closeMinigamesHub()" class="absolute -top-3 -right-3 w-10 h-10 bg-red-500 hover:bg-red-400 text-white border-2 border-white rounded-full font-black text-xl shadow-lg transition">X</button>
-                <h2 class="text-2xl font-black text-white mb-4 tracking-widest drop-shadow-md">ARCADE (8)</h2>
-                <div class="flex-1 overflow-y-auto shop-scroll grid grid-cols-2 gap-3 pr-2 content-start pb-4">
-                    <button onclick="startMinigame('pega-gas')" class="bg-pink-500 hover:bg-pink-400 text-white font-black py-4 rounded-xl shadow-[0_4px_0_rgb(157,23,77)] border-2 border-pink-300 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center"><span class="text-lg leading-tight">PEGA<br>GÁS</span></button>
-                    <button onclick="startMinigame('flappy-chama')" class="bg-orange-500 hover:bg-orange-400 text-white font-black py-4 rounded-xl shadow-[0_4px_0_rgb(194,65,12)] border-2 border-orange-300 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center"><span class="text-lg leading-tight">VOO DA<br>CHAMA</span></button>
-                    <button onclick="startMinigame('pong')" class="bg-green-500 hover:bg-green-400 text-white font-black py-4 rounded-xl shadow-[0_4px_0_rgb(21,128,61)] border-2 border-green-300 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center"><span class="text-lg leading-tight">TÊNIS DE<br>MESA</span></button>
-                    <button onclick="startMinigame('tic-tac-toe')" class="bg-blue-500 hover:bg-blue-400 text-white font-black py-4 rounded-xl shadow-[0_4px_0_rgb(29,78,216)] border-2 border-blue-300 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center"><span class="text-lg leading-tight">JOGO DA<br>VELHA</span></button>
-                    <button onclick="startMinigame('sudoku')" class="bg-yellow-500 hover:bg-yellow-400 text-white font-black py-4 rounded-xl shadow-[0_4px_0_rgb(161,98,7)] border-2 border-yellow-300 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center"><span class="text-lg leading-tight">MINI<br>SUDOKU</span></button>
-                    <button onclick="startMinigame('tetris')" class="bg-purple-500 hover:bg-purple-400 text-white font-black py-4 rounded-xl shadow-[0_4px_0_rgb(107,33,168)] border-2 border-purple-300 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center"><span class="text-lg leading-tight">TETRIS<br>ISQUEIRO</span></button>
-                    <button onclick="startMinigame('racing')" class="bg-red-500 hover:bg-red-400 text-white font-black py-4 rounded-xl shadow-[0_4px_0_rgb(185,28,28)] border-2 border-red-300 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center"><span class="text-lg leading-tight">CORRIDA<br>TURBO</span></button>
-                    <button onclick="startMinigame('snake')" class="bg-teal-500 hover:bg-teal-400 text-white font-black py-4 rounded-xl shadow-[0_4px_0_rgb(15,118,110)] border-2 border-teal-300 active:translate-y-1 active:shadow-none transition-all flex flex-col items-center"><span class="text-lg leading-tight">COBRINHA<br>GÁS</span></button>
+            <div class="bg-indigo-600 w-full max-w-md rounded-3xl p-6 md:p-8 shadow-2xl border-4 border-indigo-400 text-center relative h-[85vh] flex flex-col">
+                <button onclick="closeMinigamesHub()" class="absolute -top-4 -right-4 w-12 h-12 bg-red-500 hover:bg-red-400 text-white border-4 border-white rounded-full font-black text-2xl shadow-lg transition">X</button>
+                <h2 class="text-3xl font-black text-white mb-6 tracking-widest drop-shadow-md">ARCADE (8)</h2>
+                <div class="flex-1 overflow-y-auto shop-scroll grid grid-cols-2 gap-4 pr-2 content-start pb-4">
+                    <button onclick="startMinigame('pega-gas')" class="bg-pink-500 hover:bg-pink-400 text-white font-black py-6 rounded-2xl shadow-[0_6px_0_rgb(157,23,77)] border-2 border-pink-300 active:translate-y-2 active:shadow-none transition-all flex flex-col items-center"><span class="text-xl leading-tight">PEGA<br>GÁS</span></button>
+                    <button onclick="startMinigame('flappy-chama')" class="bg-orange-500 hover:bg-orange-400 text-white font-black py-6 rounded-2xl shadow-[0_6px_0_rgb(194,65,12)] border-2 border-orange-300 active:translate-y-2 active:shadow-none transition-all flex flex-col items-center"><span class="text-xl leading-tight">VOO DA<br>CHAMA</span></button>
+                    <button onclick="startMinigame('pong')" class="bg-green-500 hover:bg-green-400 text-white font-black py-6 rounded-2xl shadow-[0_6px_0_rgb(21,128,61)] border-2 border-green-300 active:translate-y-2 active:shadow-none transition-all flex flex-col items-center"><span class="text-xl leading-tight">TÊNIS DE<br>MESA</span></button>
+                    <button onclick="startMinigame('tic-tac-toe')" class="bg-blue-500 hover:bg-blue-400 text-white font-black py-6 rounded-2xl shadow-[0_6px_0_rgb(29,78,216)] border-2 border-blue-300 active:translate-y-2 active:shadow-none transition-all flex flex-col items-center"><span class="text-xl leading-tight">JOGO DA<br>VELHA</span></button>
+                    <button onclick="startMinigame('sudoku')" class="bg-yellow-500 hover:bg-yellow-400 text-white font-black py-6 rounded-2xl shadow-[0_6px_0_rgb(161,98,7)] border-2 border-yellow-300 active:translate-y-2 active:shadow-none transition-all flex flex-col items-center"><span class="text-xl leading-tight">MINI<br>SUDOKU</span></button>
+                    <button onclick="startMinigame('tetris')" class="bg-purple-500 hover:bg-purple-400 text-white font-black py-6 rounded-2xl shadow-[0_6px_0_rgb(107,33,168)] border-2 border-purple-300 active:translate-y-2 active:shadow-none transition-all flex flex-col items-center"><span class="text-xl leading-tight">TETRIS<br>ISQUEIRO</span></button>
+                    <button onclick="startMinigame('racing')" class="bg-red-500 hover:bg-red-400 text-white font-black py-6 rounded-2xl shadow-[0_6px_0_rgb(185,28,28)] border-2 border-red-300 active:translate-y-2 active:shadow-none transition-all flex flex-col items-center"><span class="text-xl leading-tight">CORRIDA<br>TURBO</span></button>
+                    <button onclick="startMinigame('snake')" class="bg-teal-500 hover:bg-teal-400 text-white font-black py-6 rounded-2xl shadow-[0_6px_0_rgb(15,118,110)] border-2 border-teal-300 active:translate-y-2 active:shadow-none transition-all flex flex-col items-center"><span class="text-xl leading-tight">COBRINHA<br>GÁS</span></button>
                 </div>
             </div>
         </div>
 
         <!-- TELA DO JOGO (CANVAS) -->
         <div id="game-canvas-screen" class="hidden absolute inset-0 bg-sky-300 flex-col z-[60]">
-            <div class="p-2 px-4 bg-sky-900 text-white flex justify-between items-center shadow-md z-50 relative">
-                <div class="font-bold text-lg flex gap-4"><span>Pts: <span id="game-score">0</span></span><span class="text-yellow-400">$ <span id="game-coins">0</span></span></div>
-                <button onclick="stopMinigame()" class="bg-red-500 hover:bg-red-400 px-3 py-1 rounded font-bold border-b-4 border-red-700 active:translate-y-1 active:border-b-0 text-sm transition">Sair</button>
+            <div class="p-3 px-6 bg-sky-900 text-white flex justify-between items-center shadow-md z-50 relative shrink-0">
+                <div class="font-bold text-xl flex gap-6"><span>Pts: <span id="game-score">0</span></span><span class="text-yellow-400">$ <span id="game-coins">0</span></span></div>
+                <button onclick="stopMinigame()" class="bg-red-500 hover:bg-red-400 px-4 py-2 rounded-lg font-bold border-b-4 border-red-700 active:translate-y-1 active:border-b-0 transition">Sair</button>
             </div>
             
             <div class="flex-1 relative overflow-hidden flex flex-col items-center" id="canvas-container">
-                <canvas id="gameCanvas" class="block w-full max-w-[600px] h-full shadow-2xl bg-black/10 cursor-none"></canvas>
+                <canvas id="gameCanvas" class="block w-full h-full shadow-2xl bg-black/10"></canvas>
                 
                 <!-- D-Pad Genérico para Snake e Tetris -->
-                <div id="dpad-controls" class="hidden absolute bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[600px] px-4 flex justify-between items-end z-40 pointer-events-none">
-                    <div class="flex gap-2 pointer-events-auto">
-                        <button ontouchstart="btnLeft(event)" class="w-14 h-14 bg-white/80 border-b-4 border-gray-400 rounded-full font-black text-2xl active:translate-y-1 active:border-b-0 shadow-lg">&lt;</button>
-                        <button ontouchstart="btnRight(event)" class="w-14 h-14 bg-white/80 border-b-4 border-gray-400 rounded-full font-black text-2xl active:translate-y-1 active:border-b-0 shadow-lg">&gt;</button>
+                <div id="dpad-controls" class="hidden absolute bottom-8 left-0 w-full px-6 flex justify-between items-end z-40 pointer-events-none md:hidden">
+                    <div class="flex gap-3 pointer-events-auto">
+                        <button ontouchstart="btnLeft(event)" class="w-16 h-16 bg-white/80 border-b-4 border-gray-400 rounded-full font-black text-3xl active:translate-y-1 active:border-b-0 shadow-lg">&lt;</button>
+                        <button ontouchstart="btnRight(event)" class="w-16 h-16 bg-white/80 border-b-4 border-gray-400 rounded-full font-black text-3xl active:translate-y-1 active:border-b-0 shadow-lg">&gt;</button>
                     </div>
-                    <div class="flex flex-col gap-2 pointer-events-auto">
-                        <button ontouchstart="btnUp(event)" id="btn-up" class="w-14 h-14 bg-blue-500 text-white border-b-4 border-blue-700 rounded-full font-black text-xl active:translate-y-1 active:border-b-0 shadow-lg">^</button>
-                        <button ontouchstart="btnDown(event)" id="btn-down" class="w-14 h-14 bg-red-500 text-white border-b-4 border-red-700 rounded-full font-black text-xl active:translate-y-1 active:border-b-0 shadow-lg">v</button>
+                    <div class="flex flex-col gap-3 pointer-events-auto">
+                        <button ontouchstart="btnUp(event)" id="btn-up" class="w-16 h-16 bg-blue-500 text-white border-b-4 border-blue-700 rounded-full font-black text-2xl active:translate-y-1 active:border-b-0 shadow-lg">^</button>
+                        <button ontouchstart="btnDown(event)" id="btn-down" class="w-16 h-16 bg-red-500 text-white border-b-4 border-red-700 rounded-full font-black text-2xl active:translate-y-1 active:border-b-0 shadow-lg">v</button>
                     </div>
                 </div>
 
-                <div id="game-start-overlay" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white p-6 text-center z-50">
-                    <h2 id="game-title" class="text-4xl font-black mb-4 text-white drop-shadow-lg">JOGO</h2>
-                    <p id="game-desc" class="mb-6 font-bold text-lg text-gray-200">Instruções</p>
-                    <button onclick="runMinigameLoop()" class="bg-green-500 hover:bg-green-400 px-8 py-3 rounded-full font-black text-2xl border-b-4 border-green-700 active:translate-y-1 active:border-b-0 shadow-xl transition">START</button>
+                <div id="game-start-overlay" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white p-8 text-center z-50 backdrop-blur-sm">
+                    <h2 id="game-title" class="text-5xl font-black mb-6 text-white drop-shadow-2xl">JOGO</h2>
+                    <p id="game-desc" class="mb-8 font-bold text-xl text-gray-200 max-w-lg">Instruções</p>
+                    <button onclick="runMinigameLoop()" class="bg-green-500 hover:bg-green-400 px-12 py-4 rounded-full font-black text-3xl border-b-4 border-green-700 active:translate-y-1 active:border-b-0 shadow-2xl transition hover:scale-105">START</button>
                 </div>
                 
-                <div id="game-over-overlay" class="hidden absolute inset-0 bg-black/90 flex flex-col items-center justify-center text-white p-6 text-center z-50">
-                    <h2 id="go-title" class="text-5xl font-black mb-2 text-red-500">FIM!</h2>
-                    <p class="text-xl font-bold mb-2">Pontos: <span id="final-score">0</span></p>
-                    <p class="text-2xl font-black text-yellow-400 mb-6">+ <span id="final-coins">0</span> Moedas</p>
-                    <div class="flex gap-4">
-                        <button onclick="resetGameUI()" class="bg-blue-500 hover:bg-blue-400 px-6 py-3 rounded-xl font-black border-b-4 border-blue-700 active:translate-y-1 active:border-b-0 transition">REJOGAR</button>
-                        <button onclick="stopMinigame()" class="bg-gray-500 hover:bg-gray-400 px-6 py-3 rounded-xl font-black border-b-4 border-gray-700 active:translate-y-1 active:border-b-0 transition">VOLTAR</button>
+                <div id="game-over-overlay" class="hidden absolute inset-0 bg-black/90 flex flex-col items-center justify-center text-white p-8 text-center z-50 backdrop-blur-sm">
+                    <h2 id="go-title" class="text-6xl font-black mb-4 text-red-500 drop-shadow-lg">FIM!</h2>
+                    <p class="text-3xl font-bold mb-4">Pontos: <span id="final-score" class="text-white">0</span></p>
+                    <p class="text-4xl font-black text-yellow-400 mb-10 drop-shadow-md">+ <span id="final-coins">0</span> Moedas</p>
+                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                        <button onclick="resetGameUI()" class="bg-blue-500 hover:bg-blue-400 px-8 py-4 rounded-2xl font-black text-xl border-b-4 border-blue-700 active:translate-y-1 active:border-b-0 transition">REJOGAR</button>
+                        <button onclick="stopMinigame()" class="bg-gray-600 hover:bg-gray-500 px-8 py-4 rounded-2xl font-black text-xl border-b-4 border-gray-800 active:translate-y-1 active:border-b-0 transition">VOLTAR</button>
                     </div>
                 </div>
             </div>
@@ -427,17 +434,17 @@
 
             if (isSleeping) {
                 charParts.flame.style.display = 'none';
-                charParts.eyeL.className = "w-4 h-1 bg-black rounded-full mt-2 transition-all duration-300"; charParts.eyeL.innerHTML = ""; charParts.eyeR.className = "w-4 h-1 bg-black rounded-full mt-2 transition-all duration-300"; charParts.eyeR.innerHTML = "";
-                charParts.mouth.className = "mt-3 w-4 h-2 border-b-4 border-black rounded-b-full transition-all duration-300";
+                charParts.eyeL.className = "w-3 h-1 bg-black rounded-full mt-1.5 transition-all duration-300"; charParts.eyeL.innerHTML = ""; charParts.eyeR.className = "w-3 h-1 bg-black rounded-full mt-1.5 transition-all duration-300"; charParts.eyeR.innerHTML = "";
+                charParts.mouth.className = "mt-2 w-3 h-1.5 border-b-4 border-black rounded-b-full transition-all duration-300";
             } else {
                 charParts.flame.style.display = stats.fuel > 0 ? 'block' : 'none';
                 if(stats.fuel > 0) charParts.flame.style.transform = `scale(${0.5 + (stats.energy / 200)}) translateX(-50%)`;
-                charParts.eyeL.className = "w-4 h-5 bg-black rounded-full relative transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"; charParts.eyeL.innerHTML = '<div class="absolute top-1 right-1 w-1.5 h-1.5 bg-white rounded-full"></div>';
-                charParts.eyeR.className = "w-4 h-5 bg-black rounded-full relative transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"; charParts.eyeR.innerHTML = '<div class="absolute top-1 right-1 w-1.5 h-1.5 bg-white rounded-full"></div>';
+                charParts.eyeL.className = "w-3 h-4 bg-black rounded-full relative transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"; charParts.eyeL.innerHTML = '<div class="absolute top-0.5 right-0.5 w-1 h-1 bg-white rounded-full"></div>';
+                charParts.eyeR.className = "w-3 h-4 bg-black rounded-full relative transition-all duration-300 shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"; charParts.eyeR.innerHTML = '<div class="absolute top-0.5 right-0.5 w-1 h-1 bg-white rounded-full"></div>';
                 const avg = (stats.fuel + stats.clean + stats.energy + stats.fun) / 4;
-                if (avg > 70) charParts.mouth.className = "mt-3 w-6 h-3 border-b-4 border-black rounded-b-full transition-all duration-300";
-                else if (avg > 40) charParts.mouth.className = "mt-3 w-4 h-1 bg-black rounded-full transition-all duration-300";
-                else charParts.mouth.className = "mt-4 w-6 h-3 border-t-4 border-black rounded-t-full transition-all duration-300";
+                if (avg > 70) charParts.mouth.className = "mt-2 w-4 h-2 border-b-4 border-black rounded-b-full transition-all duration-300";
+                else if (avg > 40) charParts.mouth.className = "mt-2 w-3 h-1 bg-black rounded-full transition-all duration-300";
+                else charParts.mouth.className = "mt-2.5 w-4 h-2 border-t-4 border-black rounded-t-full transition-all duration-300";
             }
         }
 
@@ -445,7 +452,7 @@
             const b = document.getElementById('thought-bubble'); b.innerText = msg; b.style.opacity = '1'; setTimeout(() => { b.style.opacity = '0'; }, 3000);
         }
         function showFeedback(text, color, isCoin=false) {
-            let fb = document.getElementById('feedback-text'); fb.innerHTML = isCoin ? `<span class="text-yellow-400 font-black text-3xl drop-shadow-md">+${text} $</span>` : text;
+            let fb = document.getElementById('feedback-text'); fb.innerHTML = isCoin ? `<span class="text-yellow-400 font-black text-4xl drop-shadow-md">+${text} $</span>` : text;
             fb.style.color = color; fb.style.opacity = '1'; fb.style.transform = 'translate(-50%, -100%) scale(1.2)';
             setTimeout(() => { fb.style.opacity = '0'; fb.style.transform = 'translate(-50%, -50%) scale(1)'; }, 800);
         }
@@ -480,13 +487,13 @@
             isSleeping = !isSleeping;
             if (isSleeping) { 
                 document.getElementById('game-app').classList.add('is-sleeping'); document.getElementById('btn-sleep-text').innerText = "ACORDAR"; document.getElementById('zzz-container').classList.remove('hidden'); document.querySelectorAll('.nav-btn:not(#nav-bedroom)').forEach(b => b.style.opacity = '0.3'); 
-                document.getElementById('bedroom-window').className = "absolute top-[10%] right-[10%] w-16 sm:w-20 h-20 sm:h-24 border-4 border-gray-600 bg-sky-950 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
+                document.getElementById('bedroom-window').className = "absolute top-[10%] right-[10%] w-20 h-24 sm:w-24 sm:h-28 border-4 border-gray-600 bg-sky-950 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
                 document.getElementById('win-sun-moon').className = "absolute top-2 right-2 w-4 h-4 bg-gray-200 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fff]";
                 document.getElementById('win-star1').classList.remove('hidden'); document.getElementById('win-star2').classList.remove('hidden');
             } else { 
                 document.getElementById('game-app').classList.remove('is-sleeping'); document.getElementById('btn-sleep-text').innerText = "DORMIR"; document.getElementById('zzz-container').classList.add('hidden'); document.querySelectorAll('.nav-btn').forEach(b => b.style.opacity = '1'); 
-                document.getElementById('bedroom-window').className = "absolute top-[10%] right-[10%] w-16 sm:w-20 h-20 sm:h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
-                document.getElementById('win-sun-moon').className = "absolute top-2 right-2 w-5 h-5 sm:w-6 sm:h-6 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fde047]";
+                document.getElementById('bedroom-window').className = "absolute top-[10%] right-[10%] w-20 h-24 sm:w-24 sm:h-28 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
+                document.getElementById('win-sun-moon').className = "absolute top-2 right-2 w-6 h-6 sm:w-8 sm:h-8 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_12px_#fde047]";
                 document.getElementById('win-star1').classList.add('hidden'); document.getElementById('win-star2').classList.add('hidden');
             }
             updateUI();
@@ -498,8 +505,8 @@
         function generateColorPalette() {
             const wc = document.getElementById('wall-colors'), fc = document.getElementById('floor-colors'); wc.innerHTML = ''; fc.innerHTML = '';
             paletteOptions.forEach(c => {
-                let w = document.createElement('button'); w.className = 'w-8 h-8 sm:w-10 sm:h-10 rounded-full border-4 border-gray-300 shadow-sm active:scale-90 transition'; w.style.backgroundColor = c; w.onclick = () => { roomThemes[currentRoom].wall = c; applyRoomTheme(currentRoom); }; wc.appendChild(w);
-                let f = document.createElement('button'); f.className = 'w-8 h-8 sm:w-10 sm:h-10 rounded-lg border-4 border-gray-300 shadow-sm active:scale-90 transform rotate-45 mt-2 mb-2 ml-1 transition'; f.style.backgroundColor = c; f.onclick = () => { roomThemes[currentRoom].floor = c; applyRoomTheme(currentRoom); }; fc.appendChild(f);
+                let w = document.createElement('button'); w.className = 'w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-gray-300 shadow-sm active:scale-90 transition hover:scale-110'; w.style.backgroundColor = c; w.onclick = () => { roomThemes[currentRoom].wall = c; applyRoomTheme(currentRoom); }; wc.appendChild(w);
+                let f = document.createElement('button'); f.className = 'w-10 h-10 md:w-12 md:h-12 rounded-lg border-4 border-gray-300 shadow-sm active:scale-90 transform rotate-45 mt-2 mb-2 ml-1 transition hover:scale-110'; f.style.backgroundColor = c; f.onclick = () => { roomThemes[currentRoom].floor = c; applyRoomTheme(currentRoom); }; fc.appendChild(f);
             });
         }
 
@@ -514,12 +521,12 @@
             shopData[category].forEach(item => {
                 const isOwned = inventory[category].includes(item.id); if (isInventoryMode && !isOwned) return; 
                 const isEquipped = equipped[category === 'colors' ? 'color' : category === 'hats' ? 'hat' : 'shirt'] === item.id;
-                const card = document.createElement('div'); card.className = `bg-gray-50 border-2 rounded-xl p-2 flex flex-col items-center justify-between text-center transition-all shadow-sm ${isEquipped ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-300'}`;
+                const card = document.createElement('div'); card.className = `bg-gray-50 border-2 rounded-2xl p-3 flex flex-col items-center justify-between text-center transition-all shadow-sm ${isEquipped ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-300 hover:shadow-md'}`;
                 
-                let iconHTML = category === 'colors' ? `<div class="w-12 h-16 rounded border-2 border-black mb-2 shadow-inner" style="background-color: ${item.bg};"><div class="w-full h-1/2 mt-auto" style="background-color: ${item.fill};"></div></div>` : `<div class="w-12 h-12 mb-2 drop-shadow-sm">${item.svg || '<div class="text-xs text-gray-400 pt-4">Vazio</div>'}</div>`;
-                let btnHTML = isEquipped ? `<button class="w-full bg-green-500 text-white text-xs font-bold py-1.5 rounded shadow-sm" disabled>USANDO</button>` : isOwned ? `<button onclick="equipItem('${category}', '${item.id}')" class="w-full bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1.5 rounded active:scale-95 transition shadow-sm">EQUIPAR</button>` : `<button onclick="buyItem('${category}', '${item.id}', ${item.price})" class="w-full text-xs font-bold py-1.5 rounded flex justify-center items-center gap-1 active:scale-95 transition ${economy.coins >= item.price ? 'bg-yellow-400 hover:bg-yellow-500 text-yellow-900 shadow-sm' : 'bg-gray-300 text-gray-500'}" ${economy.coins < item.price ? 'disabled' : ''}>$ ${item.price}</button>`;
+                let iconHTML = category === 'colors' ? `<div class="w-14 h-20 rounded border-2 border-black mb-3 shadow-inner" style="background-color: ${item.bg};"><div class="w-full h-1/2 mt-auto" style="background-color: ${item.fill};"></div></div>` : `<div class="w-14 h-14 mb-3 drop-shadow-sm">${item.svg || '<div class="text-sm text-gray-400 pt-4">Vazio</div>'}</div>`;
+                let btnHTML = isEquipped ? `<button class="w-full bg-green-500 text-white text-sm font-bold py-2 rounded-xl shadow-sm" disabled>USANDO</button>` : isOwned ? `<button onclick="equipItem('${category}', '${item.id}')" class="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-bold py-2 rounded-xl active:scale-95 transition shadow-sm">EQUIPAR</button>` : `<button onclick="buyItem('${category}', '${item.id}', ${item.price})" class="w-full text-sm font-bold py-2 rounded-xl flex justify-center items-center gap-1 active:scale-95 transition ${economy.coins >= item.price ? 'bg-yellow-400 hover:bg-yellow-500 text-yellow-900 shadow-sm' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}" ${economy.coins < item.price ? 'disabled' : ''}>$ ${item.price}</button>`;
 
-                card.innerHTML = `<span class="text-xs font-bold text-gray-700 mb-1 block w-full truncate">${item.name}</span>${iconHTML}${btnHTML}`; grid.appendChild(card);
+                card.innerHTML = `<span class="text-sm font-bold text-gray-700 mb-2 block w-full truncate">${item.name}</span>${iconHTML}${btnHTML}`; grid.appendChild(card);
             });
         }
         function buyItem(category, id, price) { if (economy.coins >= price) { economy.coins -= price; inventory[category].push(id); equipItem(category, id); updateUI(); renderShop(category); } }
@@ -534,21 +541,22 @@
         function openMinigamesHub() { if(!isSleeping) document.getElementById('minigames-hub').classList.remove('hidden'); }
         function closeMinigamesHub() { document.getElementById('minigames-hub').classList.add('hidden'); }
 
-        // --- MOTOR DE MINIGAMES ---
+        // --- MOTOR DE MINIGAMES (ZERO DELAY & CONTROLES HÍBRIDOS Rato/Teclado/Dedo) ---
         const gameScreen = document.getElementById('game-canvas-screen'), canvas = document.getElementById('gameCanvas'), ctx = canvas.getContext('2d');
         let mgReq, mgScore = 0, mgCoins = 0, mgActive = false;
         
-        let pgPlayer = { width: 34, height: 50, x: 0, y: 0 }; 
-        let pongPlayer = { x: 0, y: 0, w: 60, h: 14 }; 
-        let pongAi = { x: 0, y: 30, w: 60, h: 14, speed: 4 }; 
-        let rcPlayer = { x: 0, y: 0, w: 28, h: 46 }; 
+        let pgPlayer = { width: 44, height: 60, x: 0, y: 0 }; 
+        let pongPlayer = { x: 0, y: 0, w: 80, h: 16 }; 
+        let pongAi = { x: 0, y: 40, w: 80, h: 16, speed: 5 }; 
+        let rcPlayer = { x: 0, y: 0, w: 34, h: 56 }; 
         let snkDir = 'UP'; 
-        let keys = { left: false, right: false }; // Keyboard state
-        
+        let keys = { left: false, right: false }; 
+
         function handleGlobalTouch(clientX, clientY) {
             const rect = canvas.getBoundingClientRect(); 
-            const scaleX = canvas.width / rect.width;
-            let x = (clientX - rect.left) * scaleX;
+            const scaleX = canvas.width / rect.width; 
+            let x = (clientX - rect.left) * scaleX; 
+            
             if (activeMinigame === 'pega-gas') { let px = x - (pgPlayer.width/2); pgPlayer.x = Math.max(0, Math.min(px, canvas.width - pgPlayer.width)); }
             if (activeMinigame === 'pong') { let px = x - (pongPlayer.w/2); pongPlayer.x = Math.max(0, Math.min(px, canvas.width - pongPlayer.w)); }
             if (activeMinigame === 'racing') { let px = x - (rcPlayer.w/2); rcPlayer.x = Math.max(0, Math.min(px, canvas.width - rcPlayer.w)); }
@@ -568,32 +576,39 @@
         });
         canvas.addEventListener('mousemove', (e) => { if(e.buttons > 0 || activeMinigame !== 'flappy-chama') { eType = 'move'; handleGlobalTouch(e.clientX, e.clientY); } });
 
-        // Suporte Teclado PC
         window.addEventListener('keydown', (e) => {
             if(!mgActive) return;
             if(activeMinigame === 'tetris') {
-                if(e.key === 'ArrowLeft' || e.key === 'a') btnLeft(); if(e.key === 'ArrowRight' || e.key === 'd') btnRight();
-                if(e.key === 'ArrowUp' || e.key === 'w') btnUp(); if(e.key === 'ArrowDown' || e.key === 's') btnDown();
+                if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') btnLeft();
+                if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') btnRight();
+                if(e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') btnUp();
+                if(e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') btnDown();
             }
             else if(activeMinigame === 'snake') {
-                if((e.key === 'ArrowLeft' || e.key === 'a') && snkDir !== 'RIGHT') snkDir = 'LEFT'; if((e.key === 'ArrowRight' || e.key === 'd') && snkDir !== 'LEFT') snkDir = 'RIGHT';
-                if((e.key === 'ArrowUp' || e.key === 'w') && snkDir !== 'DOWN') snkDir = 'UP'; if((e.key === 'ArrowDown' || e.key === 's') && snkDir !== 'UP') snkDir = 'DOWN';
+                if((e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') && snkDir !== 'RIGHT') snkDir = 'LEFT';
+                if((e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') && snkDir !== 'LEFT') snkDir = 'RIGHT';
+                if((e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') && snkDir !== 'DOWN') snkDir = 'UP';
+                if((e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') && snkDir !== 'UP') snkDir = 'DOWN';
             }
-            else if(activeMinigame === 'flappy-chama') { if(e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w') flPlayer.velocity = flPlayer.jump; }
+            else if(activeMinigame === 'flappy-chama') {
+                if(e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') flPlayer.velocity = flPlayer.jump;
+            }
             else if(activeMinigame === 'pega-gas' || activeMinigame === 'pong' || activeMinigame === 'racing') {
-                if(e.key === 'ArrowLeft' || e.key === 'a') keys.left = true; if(e.key === 'ArrowRight' || e.key === 'd') keys.right = true;
+                if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+                if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
             }
         });
         window.addEventListener('keyup', (e) => {
-            if(e.key === 'ArrowLeft' || e.key === 'a') keys.left = false; if(e.key === 'ArrowRight' || e.key === 'd') keys.right = false;
+            if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+            if(e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
         });
-
+        
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight;
-            if(activeMinigame === 'pega-gas') pgPlayer.y = canvas.height - 70;
+            if(activeMinigame === 'pega-gas') pgPlayer.y = canvas.height - 90;
             if(activeMinigame === 'tetris') calcTetrisScale();
-            if(activeMinigame === 'racing') rcPlayer.y = canvas.height - 70;
-            if(activeMinigame === 'pong') { pongPlayer.y = canvas.height - 50; pongPlayer.x = canvas.width/2 - pongPlayer.w/2; pongAi.x = canvas.width/2 - pongAi.w/2; }
+            if(activeMinigame === 'racing') rcPlayer.y = canvas.height - 90;
+            if(activeMinigame === 'pong') { pongPlayer.y = canvas.height - 60; pongPlayer.x = canvas.width/2 - pongPlayer.w/2; pongAi.x = canvas.width/2 - pongAi.w/2; }
         }
         window.addEventListener('resize', () => { if(isPlaying) resizeCanvas(); });
 
@@ -603,12 +618,12 @@
             const titleEl = document.getElementById('game-title'), descEl = document.getElementById('game-desc');
             document.getElementById('dpad-controls').classList.add('hidden'); document.getElementById('btn-up').innerText = 'GIRAR'; document.getElementById('btn-down').innerText = 'v';
             
-            if(gameType === 'pega-gas') { titleEl.innerText = "PEGA GÁS"; descEl.innerHTML = "Arraste ou use setas!<br><span class='text-yellow-400'>1 Moeda / 5 Pts.</span>"; } 
-            else if(gameType === 'flappy-chama') { titleEl.innerText = "VOO DA CHAMA"; descEl.innerHTML = "Toque rápido ou Espaço.<br><span class='text-yellow-400'>1 Moeda / 2 Canos.</span>"; }
-            else if(gameType === 'pong') { titleEl.innerText = "TÊNIS DE MESA"; descEl.innerHTML = "Controle a raquete (Arraste ou A/D).<br><span class='text-yellow-400'>1 Moeda / Ponto.</span>"; }
+            if(gameType === 'pega-gas') { titleEl.innerText = "PEGA GÁS"; descEl.innerHTML = "Arraste ou use Setas para pegar gás!<br><span class='text-yellow-400'>1 Moeda / 5 Pts.</span>"; } 
+            else if(gameType === 'flappy-chama') { titleEl.innerText = "VOO DA CHAMA"; descEl.innerHTML = "Toque rápido ou Espaço para voar.<br><span class='text-yellow-400'>1 Moeda / 2 Canos.</span>"; }
+            else if(gameType === 'pong') { titleEl.innerText = "TÊNIS DE MESA"; descEl.innerHTML = "Arraste a raquete na horizontal.<br><span class='text-yellow-400'>1 Moeda / Ponto.</span>"; }
             else if(gameType === 'tic-tac-toe') { titleEl.innerText = "JOGO DA VELHA"; descEl.innerHTML = "Jogue como Azul.<br><span class='text-yellow-400'>5 Moedas / Vitória.</span>"; }
             else if(gameType === 'sudoku') { titleEl.innerText = "SUDOKU"; descEl.innerHTML = "Toque para alternar cores.<br><span class='text-yellow-400'>10 Moedas ao fechar!</span>"; }
-            else if(gameType === 'tetris') { titleEl.innerText = "TETRIS"; descEl.innerHTML = "Use botões ou Setas no PC.<br><span class='text-yellow-400'>1 Moeda / Linha.</span>"; document.getElementById('dpad-controls').classList.remove('hidden'); }
+            else if(gameType === 'tetris') { titleEl.innerText = "TETRIS"; descEl.innerHTML = "Forme linhas completas.<br><span class='text-yellow-400'>1 Moeda / Linha.</span>"; document.getElementById('dpad-controls').classList.remove('hidden'); }
             else if(gameType === 'racing') { titleEl.innerText = "CORRIDA TURBO"; descEl.innerHTML = "Deslize ou use Setas para desviar.<br><span class='text-yellow-400'>1 Moeda / 500m.</span>"; }
             else if(gameType === 'snake') { titleEl.innerText = "COBRINHA GÁS"; descEl.innerHTML = "Use botões ou Setas/WASD.<br><span class='text-yellow-400'>1 Moeda / 2 Comidas.</span>"; document.getElementById('dpad-controls').classList.remove('hidden'); document.getElementById('btn-up').innerText = '^'; }
 
@@ -638,7 +653,7 @@
 
         function triggerGameOver(win=false, customTitle="FIM!") {
             mgActive = false; document.getElementById('final-score').innerText = mgScore; document.getElementById('final-coins').innerText = mgCoins;
-            document.getElementById('go-title').innerText = customTitle; document.getElementById('go-title').className = win ? "text-5xl font-black mb-2 text-green-400" : "text-5xl font-black mb-2 text-red-500";
+            document.getElementById('go-title').innerText = customTitle; document.getElementById('go-title').className = win ? "text-6xl font-black mb-4 text-green-400 drop-shadow-lg" : "text-6xl font-black mb-4 text-red-500 drop-shadow-lg";
             document.getElementById('game-over-overlay').classList.remove('hidden');
         }
 
@@ -659,10 +674,10 @@
         function initPegaGas() { pgPlayer.x = canvas.width/2 - pgPlayer.width/2; pgItems = []; pgLoop(); }
         function pgLoop() {
             if (!mgActive) return; ctx.clearRect(0, 0, canvas.width, canvas.height); 
-            if(keys.left) pgPlayer.x -= 8; if(keys.right) pgPlayer.x += 8;
+            if(keys.left) pgPlayer.x -= 10; if(keys.right) pgPlayer.x += 10;
             pgPlayer.x = Math.max(0, Math.min(pgPlayer.x, canvas.width - pgPlayer.width));
             drawLighterAvatar(pgPlayer.x, pgPlayer.y, pgPlayer.width, pgPlayer.height);
-            if (Math.random() < 0.05 + (mgScore*0.001)) { pgItems.push({ x: Math.random()*(canvas.width-20), y: -20, width: 20, height: 20, speed: 4+Math.random()*4+(mgScore*0.1), type: Math.random()>0.3?'gas':'water' }); }
+            if (Math.random() < 0.05 + (mgScore*0.001)) { pgItems.push({ x: Math.random()*(canvas.width-30), y: -30, width: 26, height: 26, speed: 5+Math.random()*4+(mgScore*0.1), type: Math.random()>0.3?'gas':'water' }); }
             for (let i = pgItems.length - 1; i >= 0; i--) {
                 let item = pgItems[i]; item.y += item.speed;
                 if (item.type === 'gas') { ctx.fillStyle = '#60a5fa'; ctx.fillRect(item.x, item.y, item.width, item.height); ctx.strokeStyle = '#2563eb'; ctx.lineWidth=2; ctx.strokeRect(item.x, item.y, item.width, item.height); } else { ctx.fillStyle = '#9ca3af'; ctx.beginPath(); ctx.arc(item.x+item.width/2, item.y+item.height/2, item.width/2, 0, Math.PI*2); ctx.fill(); ctx.strokeStyle = '#4b5563'; ctx.lineWidth=2; ctx.stroke(); }
@@ -675,14 +690,14 @@
 
         // ================= 2. FLAPPY =================
         let flPlayer, flPipes, flFrames;
-        function initFlappy() { flPlayer = { x: 50, y: canvas.height/2, width: 26, height: 40, velocity: 0, gravity: 0.6, jump: -9 }; flPipes = []; flFrames = 0; flLoop(); }
+        function initFlappy() { flPlayer = { x: 60, y: canvas.height/2, width: 30, height: 46, velocity: 0, gravity: 0.6, jump: -10 }; flPipes = []; flFrames = 0; flLoop(); }
         function flLoop() {
             if (!mgActive) return; ctx.clearRect(0, 0, canvas.width, canvas.height); flFrames++;
             flPlayer.velocity += flPlayer.gravity; flPlayer.y += flPlayer.velocity; drawLighterAvatar(flPlayer.x, flPlayer.y, flPlayer.width, flPlayer.height);
             if(flPlayer.y+flPlayer.height >= canvas.height || flPlayer.y <= 0) { triggerGameOver(); return; }
-            if (flFrames % 100 === 0) { let gap = 150 - Math.min(60, mgScore*2); let topHeight = Math.random()*(canvas.height-gap-50)+20; flPipes.push({ x: canvas.width, width: 40, topHeight: topHeight, gap: gap, passed: false }); }
+            if (flFrames % 100 === 0) { let gap = 180 - Math.min(70, mgScore*2); let topHeight = Math.random()*(canvas.height-gap-80)+40; flPipes.push({ x: canvas.width, width: 50, topHeight: topHeight, gap: gap, passed: false }); }
             for (let i = flPipes.length - 1; i >= 0; i--) {
-                let p = flPipes[i]; p.x -= 3.5; ctx.fillStyle = '#16a34a'; ctx.strokeStyle = '#14532d'; ctx.lineWidth = 3; ctx.fillRect(p.x, 0, p.width, p.topHeight); ctx.strokeRect(p.x, 0, p.width, p.topHeight); ctx.fillRect(p.x, p.topHeight+p.gap, p.width, canvas.height); ctx.strokeRect(p.x, p.topHeight+p.gap, p.width, canvas.height);
+                let p = flPipes[i]; p.x -= 4.5; ctx.fillStyle = '#16a34a'; ctx.strokeStyle = '#14532d'; ctx.lineWidth = 3; ctx.fillRect(p.x, 0, p.width, p.topHeight); ctx.strokeRect(p.x, 0, p.width, p.topHeight); ctx.fillRect(p.x, p.topHeight+p.gap, p.width, canvas.height); ctx.strokeRect(p.x, p.topHeight+p.gap, p.width, canvas.height);
                 if (flPlayer.x < p.x+p.width && flPlayer.x+flPlayer.width > p.x && (flPlayer.y < p.topHeight || flPlayer.y+flPlayer.height > p.topHeight+p.gap)) { triggerGameOver(); return; }
                 if(p.x+p.width < flPlayer.x && !p.passed) { p.passed = true; mgScore++; if(mgScore%2===0) mgCoins++; document.getElementById('game-score').innerText = mgScore; document.getElementById('game-coins').innerText = mgCoins; }
                 if(p.x+p.width < 0) flPipes.splice(i, 1);
@@ -692,14 +707,17 @@
 
         // ================= 3. TÊNIS DE MESA =================
         let pongBall;
-        function initPong() { pongBall = { x: canvas.width/2, y: canvas.height/2, r: 8, dx: 4*(Math.random()>0.5?1:-1), dy: 5 }; pongLoop(); }
+        function initPong() {
+            pongBall = { x: canvas.width/2, y: canvas.height/2, r: 10, dx: 6*(Math.random()>0.5?1:-1), dy: 6 }; pongLoop();
+        }
         function pongLoop() {
             if (!mgActive) return; 
-            if(keys.left) pongPlayer.x -= 10; if(keys.right) pongPlayer.x += 10; pongPlayer.x = Math.max(10, Math.min(pongPlayer.x, canvas.width - pongPlayer.w - 10));
+            if(keys.left) pongPlayer.x -= 12; if(keys.right) pongPlayer.x += 12;
+            pongPlayer.x = Math.max(10, Math.min(pongPlayer.x, canvas.width - pongPlayer.w - 10));
 
             ctx.fillStyle = '#166534'; ctx.fillRect(0,0, canvas.width, canvas.height); 
-            ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.strokeRect(10, 10, canvas.width-20, canvas.height-20); 
-            ctx.beginPath(); ctx.setLineDash([8, 8]); ctx.moveTo(10, canvas.height/2); ctx.lineTo(canvas.width-10, canvas.height/2); ctx.stroke(); ctx.setLineDash([]); 
+            ctx.strokeStyle = '#fff'; ctx.lineWidth = 6; ctx.strokeRect(10, 10, canvas.width-20, canvas.height-20); 
+            ctx.beginPath(); ctx.setLineDash([12, 12]); ctx.moveTo(10, canvas.height/2); ctx.lineTo(canvas.width-10, canvas.height/2); ctx.stroke(); ctx.setLineDash([]); 
             
             pongBall.x += pongBall.dx; pongBall.y += pongBall.dy;
             if(pongBall.x - pongBall.r < 10 || pongBall.x + pongBall.r > canvas.width-10) pongBall.dx *= -1; 
@@ -710,7 +728,7 @@
 
             if(pongBall.y + pongBall.r > pongPlayer.y && pongBall.x > pongPlayer.x && pongBall.x < pongPlayer.x + pongPlayer.w) {
                 pongBall.dy = -(Math.abs(pongBall.dy) + 0.2); pongBall.y = pongPlayer.y - pongBall.r;
-                pongBall.dx = ((pongBall.x - (pongPlayer.x + pongPlayer.w/2)) / (pongPlayer.w/2)) * 6;
+                pongBall.dx = ((pongBall.x - (pongPlayer.x + pongPlayer.w/2)) / (pongPlayer.w/2)) * 7;
             }
             if(pongBall.y - pongBall.r < pongAi.y + pongAi.h && pongBall.x > pongAi.x && pongBall.x < pongAi.x + pongAi.w) {
                 pongBall.dy = Math.abs(pongBall.dy); pongBall.y = pongAi.y + pongAi.h + pongBall.r;
@@ -718,12 +736,13 @@
 
             if(pongBall.y < 0) { 
                 mgScore++; mgCoins++; document.getElementById('game-score').innerText = mgScore; document.getElementById('game-coins').innerText = mgCoins; 
-                pongBall = { x: canvas.width/2, y: canvas.height/2, r: 8, dx: 5*(Math.random()>0.5?1:-1), dy: 5 }; pongAi.speed += 0.5; 
+                pongBall = { x: canvas.width/2, y: canvas.height/2, r: 10, dx: 6*(Math.random()>0.5?1:-1), dy: 6 }; pongAi.speed += 0.5; 
             } else if (pongBall.y > canvas.height) { triggerGameOver(); return; }
 
-            drawPaddle(pongPlayer.x, pongPlayer.y, pongPlayer.w, pongPlayer.h, true); drawPaddle(pongAi.x, pongAi.y, pongAi.w, pongAi.h, false);
+            drawPaddle(pongPlayer.x, pongPlayer.y, pongPlayer.w, pongPlayer.h, true);
+            drawPaddle(pongAi.x, pongAi.y, pongAi.w, pongAi.h, false);
             ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(pongBall.x, pongBall.y, pongBall.r, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.beginPath(); ctx.arc(pongBall.x-2, pongBall.y+2, pongBall.r-2, 0, Math.PI*2); ctx.fill(); 
+            ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.beginPath(); ctx.arc(pongBall.x-3, pongBall.y+3, pongBall.r-3, 0, Math.PI*2); ctx.fill(); 
             mgReq = requestAnimationFrame(pongLoop);
         }
 
@@ -732,8 +751,8 @@
         function initTicTacToe() { tttBoard = [0,0,0, 0,0,0, 0,0,0]; tttTurn = 1; tttLoop(); }
         function tttLoop() {
             if(!mgActive) return; ctx.clearRect(0,0, canvas.width, canvas.height);
-            let s = Math.min(canvas.width, canvas.height) * 0.9; let ox = (canvas.width - s)/2, oy = (canvas.height - s)/2;
-            ctx.save(); ctx.translate(ox, oy); ctx.strokeStyle = '#0284c7'; ctx.lineWidth = 4;
+            let s = Math.min(canvas.width, canvas.height) * 0.85; let ox = (canvas.width - s)/2, oy = (canvas.height - s)/2;
+            ctx.save(); ctx.translate(ox, oy); ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth = 6;
             for(let i=1; i<3; i++) { ctx.beginPath(); ctx.moveTo(i*(s/3), 0); ctx.lineTo(i*(s/3), s); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, i*(s/3)); ctx.lineTo(s, i*(s/3)); ctx.stroke(); }
             for(let i=0; i<9; i++) { if(tttBoard[i] !== 0) { drawLighterAvatar((i%3)*(s/3) + (s/3)*0.2, Math.floor(i/3)*(s/3) + (s/3)*0.1, (s/3)*0.6, (s/3)*0.8, tttBoard[i] === 1 ? '#3b82f6' : '#ef4444'); } }
             ctx.restore(); mgReq = requestAnimationFrame(tttLoop);
@@ -742,8 +761,8 @@
         function tttTouch(clientX, clientY, isTouch) {
             if(tttTurn !== 1) return;
             const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width;
-            let x = (clientX - rect.left)*scaleX, y = (clientY - rect.top)*scaleX;
-            let s = Math.min(canvas.width, canvas.height)*0.9; let ox = (canvas.width-s)/2, oy = (canvas.height-s)/2;
+            let x = (clientX - rect.left) * scaleX, y = (clientY - rect.top) * scaleX;
+            let s = Math.min(canvas.width, canvas.height)*0.85; let ox = (canvas.width-s)/2, oy = (canvas.height-s)/2;
             if(x < ox || x > ox+s || y < oy || y > oy+s) return; let idx = Math.floor((y-oy)/(s/3))*3 + Math.floor((x-ox)/(s/3));
             if(tttBoard[idx] === 0) {
                 tttBoard[idx] = 1; let w = checkTTTWin(tttBoard);
@@ -760,19 +779,20 @@
         function initSudoku() { sdkBoard = [1,0,0,4, 0,2,3,0, 0,3,2,0, 4,0,0,1]; sdkFixed = [true,false,false,true, false,true,true,false, false,true,true,false, true,false,false,true]; sdkLoop(); }
         function sdkLoop() {
             if(!mgActive) return; ctx.clearRect(0,0, canvas.width, canvas.height);
-            let s = Math.min(canvas.width, canvas.height) * 0.9; let ox = (canvas.width - s)/2, oy = (canvas.height - s)/2; ctx.save(); ctx.translate(ox, oy); ctx.strokeStyle = '#0284c7';
-            for(let i=0; i<=4; i++) { ctx.lineWidth = (i%2===0)?5:2; ctx.beginPath(); ctx.moveTo(i*(s/4), 0); ctx.lineTo(i*(s/4), s); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, i*(s/4)); ctx.lineTo(s, i*(s/4)); ctx.stroke(); }
+            let s = Math.min(canvas.width, canvas.height) * 0.85; let ox = (canvas.width - s)/2, oy = (canvas.height - s)/2; ctx.save(); ctx.translate(ox, oy); ctx.strokeStyle = '#0284c7';
+            for(let i=0; i<=4; i++) { ctx.lineWidth = (i%2===0)?6:2; ctx.beginPath(); ctx.moveTo(i*(s/4), 0); ctx.lineTo(i*(s/4), s); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, i*(s/4)); ctx.lineTo(s, i*(s/4)); ctx.stroke(); }
             for(let i=0; i<16; i++) {
-                if(sdkFixed[i]) { ctx.fillStyle = 'rgba(0,0,0,0.1)'; ctx.fillRect((i%4)*(s/4), Math.floor(i/4)*(s/4), s/4, s/4); }
+                if(sdkFixed[i]) { ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.fillRect((i%4)*(s/4), Math.floor(i/4)*(s/4), s/4, s/4); }
                 if(sdkBoard[i] !== 0) drawLighterAvatar((i%4)*(s/4) + (s/4)*0.2, Math.floor(i/4)*(s/4) + (s/4)*0.1, (s/4)*0.6, (s/4)*0.8, sdkColors[sdkBoard[i]]);
             }
             ctx.restore(); mgReq = requestAnimationFrame(sdkLoop);
         }
         function sdkTouch(clientX, clientY, isTouch) {
             const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width;
-            let x = (clientX - rect.left)*scaleX, y = (clientY - rect.top)*scaleX;
-            let s = Math.min(canvas.width, canvas.height)*0.9; let ox = (canvas.width-s)/2, oy = (canvas.height-s)/2;
-            if(x < ox || x > ox+s || y < oy || y > oy+s) return; let idx = Math.floor((y-oy)/(s/4))*4 + Math.floor((x-ox)/(s/4));
+            let x = (clientX - rect.left) * scaleX, y = (clientY - rect.top) * scaleX;
+            let s = Math.min(canvas.width, canvas.height)*0.85; let ox = (canvas.width-s)/2, oy = (canvas.height-s)/2;
+            if(x < ox || x > ox+s || y < oy || y > oy+s) return;
+            let idx = Math.floor((y-oy)/(s/4))*4 + Math.floor((x-ox)/(s/4));
             if(!sdkFixed[idx]) { sdkBoard[idx] = (sdkBoard[idx]+1)%5; if(!sdkBoard.includes(0)) {
                 let b = [sdkBoard.slice(0,4), sdkBoard.slice(4,8), sdkBoard.slice(8,12), sdkBoard.slice(12,16)], v = true;
                 for(let i=0; i<4; i++) { if(new Set(b[i]).size<4 || new Set([b[0][i], b[1][i], b[2][i], b[3][i]]).size<4) v = false; }
@@ -785,7 +805,7 @@
         let tetBoard, tetPiece, tetX, tetY, tetFrames, tetScale;
         const tet = [{s: [[1,1,1,1]], c: '#3b82f6'}, {s: [[1,1],[1,1]], c: '#eab308'}, {s: [[0,1,0],[1,1,1]], c: '#a855f7'}, {s: [[1,1,0],[0,1,1]], c: '#ef4444'}, {s: [[0,1,1],[1,1,0]], c: '#22c55e'}, {s: [[1,0,0],[1,1,1]], c: '#f97316'}];
         function initTetris() { tetBoard = Array(20).fill().map(()=>Array(10).fill(0)); tetFrames=0; calcTetrisScale(); spawnTetPiece(); tetLoop(); }
-        function calcTetrisScale() { tetScale = Math.min(canvas.width/12, canvas.height/22); }
+        function calcTetrisScale() { tetScale = Math.min(canvas.width/12, canvas.height/24); }
         function spawnTetPiece() { let t = tet[Math.floor(Math.random()*tet.length)]; tetPiece = {s: t.s, c: t.c}; tetX = 3; tetY = 0; if(tetCol()) triggerGameOver(); }
         function tetCol(ox=0, oy=0, s=tetPiece.s) { for(let r=0; r<s.length; r++) for(let c=0; c<s[r].length; c++) if(s[r][c]) { let nx = tetX+c+ox, ny = tetY+r+oy; if(nx<0||nx>=10||ny>=20||(ny>=0&&tetBoard[ny][nx])) return true; } return false; }
         function tetMerge() {
@@ -797,7 +817,7 @@
         function tetLoop() {
             if(!mgActive) return; ctx.clearRect(0,0, canvas.width, canvas.height); tetFrames++;
             if(tetFrames > 30 - Math.min(25, Math.floor(mgScore/200))) { tetFrames=0; if(tetCol(0,1)) tetMerge(); else tetY++; }
-            let ox = (canvas.width-(10*tetScale))/2, oy = (canvas.height-(20*tetScale))/2 - 30; ctx.save(); ctx.translate(ox, oy); ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fillRect(0,0,10*tetScale, 20*tetScale);
+            let ox = (canvas.width-(10*tetScale))/2, oy = (canvas.height-(20*tetScale))/2 - 30; ctx.save(); ctx.translate(ox, oy); ctx.fillStyle = 'rgba(0,0,0,0.4)'; ctx.fillRect(0,0,10*tetScale, 20*tetScale);
             for(let r=0; r<20; r++) for(let c=0; c<10; c++) if(tetBoard[r][c]) { ctx.fillStyle=tetBoard[r][c]; ctx.fillRect(c*tetScale+1, r*tetScale+1, tetScale-2, tetScale-2); }
             for(let r=0; r<tetPiece.s.length; r++) for(let c=0; c<tetPiece.s[r].length; c++) if(tetPiece.s[r][c]) { ctx.fillStyle=tetPiece.c; ctx.fillRect((tetX+c)*tetScale+1, (tetY+r)*tetScale+1, tetScale-2, tetScale-2); }
             ctx.restore(); mgReq = requestAnimationFrame(tetLoop);
@@ -809,14 +829,15 @@
         function rcLoop() {
             if(!mgActive) return; ctx.clearRect(0,0,canvas.width,canvas.height); rcFrames++;
             
-            if(keys.left) rcPlayer.x -= 9; if(keys.right) rcPlayer.x += 9;
+            if(keys.left) rcPlayer.x -= 10;
+            if(keys.right) rcPlayer.x += 10;
             rcPlayer.x = Math.max(0, Math.min(rcPlayer.x, canvas.width - rcPlayer.w));
 
-            ctx.fillStyle = '#475569'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#cbd5e1'; rcRoadY = (rcRoadY + 5) % 40;
-            for(let i=-40; i<canvas.height; i+=40) { ctx.fillRect(canvas.width/4, i+rcRoadY, 4, 20); ctx.fillRect(canvas.width*0.75, i+rcRoadY, 4, 20); }
+            ctx.fillStyle = '#475569'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#cbd5e1'; rcRoadY = (rcRoadY + 6) % 40;
+            for(let i=-40; i<canvas.height; i+=40) { ctx.fillRect(canvas.width/4, i+rcRoadY, 6, 20); ctx.fillRect(canvas.width*0.75, i+rcRoadY, 6, 20); }
             drawLighterAvatar(rcPlayer.x, rcPlayer.y, rcPlayer.w, rcPlayer.h);
             mgScore++; if(mgScore % 500 === 0) { mgCoins++; document.getElementById('game-coins').innerText = mgCoins; } document.getElementById('game-score').innerText = mgScore;
-            if(rcFrames % Math.max(25, 60 - Math.floor(mgScore/100)) === 0) { rcObs.push({x: Math.random()*(canvas.width-30), y: -50, w: 30, h: 46, s: 6 + (mgScore/1000)}); }
+            if(rcFrames % Math.max(20, 50 - Math.floor(mgScore/100)) === 0) { rcObs.push({x: Math.random()*(canvas.width-40), y: -60, w: 34, h: 56, s: 7 + (mgScore/1000)}); }
             for(let i=rcObs.length-1; i>=0; i--) {
                 rcObs[i].y += rcObs[i].s; drawLighterAvatar(rcObs[i].x, rcObs[i].y, rcObs[i].w, rcObs[i].h, '#ef4444');
                 if(rcPlayer.x < rcObs[i].x+rcObs[i].w && rcPlayer.x+rcPlayer.w > rcObs[i].x && rcPlayer.y < rcObs[i].y+rcObs[i].h && rcPlayer.y+rcPlayer.h > rcObs[i].y) { triggerGameOver(); return; }
@@ -826,16 +847,16 @@
         }
 
         // ================= 8. COBRINHA =================
-        let snkArr, snkFood, snkSize = 20, snkFrames = 0;
-        function initSnake() { snkArr = [{x: 5, y: 5}]; snkDir = 'RIGHT'; spawnSnkFood(); snkFrames=0; snkLoop(); }
-        function spawnSnkFood() { snkFood = {x: Math.floor(Math.random()*(canvas.width/snkSize)), y: Math.floor(Math.random()*((canvas.height-120)/snkSize))}; }
+        let snkArr, snkFood, snkSize = 25, snkFrames = 0;
+        function initSnake() { snkArr = [{x: 5, y: 5}]; snkDir = 'RIGHT'; snkSize = Math.floor(canvas.width/15); spawnSnkFood(); snkFrames=0; snkLoop(); }
+        function spawnSnkFood() { snkFood = {x: Math.floor(Math.random()*(canvas.width/snkSize)), y: Math.floor(Math.random()*((canvas.height-140)/snkSize))}; }
         function snkLoop() {
             if(!mgActive) return; ctx.clearRect(0,0,canvas.width,canvas.height); snkFrames++;
-            ctx.fillStyle = '#1e293b'; ctx.fillRect(0,0,canvas.width,canvas.height); 
-            if(snkFrames % 8 === 0) {
+            ctx.fillStyle = '#0f172a'; ctx.fillRect(0,0,canvas.width,canvas.height); 
+            if(snkFrames % 6 === 0) {
                 let head = {x: snkArr[0].x, y: snkArr[0].y};
                 if(snkDir==='UP') head.y--; else if(snkDir==='DOWN') head.y++; else if(snkDir==='LEFT') head.x--; else if(snkDir==='RIGHT') head.x++;
-                if(head.x < 0 || head.x >= Math.floor(canvas.width/snkSize) || head.y < 0 || head.y >= Math.floor((canvas.height-120)/snkSize)) { triggerGameOver(); return; }
+                if(head.x < 0 || head.x >= Math.floor(canvas.width/snkSize) || head.y < 0 || head.y >= Math.floor((canvas.height-140)/snkSize)) { triggerGameOver(); return; }
                 for(let p of snkArr) if(head.x === p.x && head.y === p.y) { triggerGameOver(); return; }
                 snkArr.unshift(head);
                 if(head.x === snkFood.x && head.y === snkFood.y) { mgScore++; if(mgScore%2===0) mgCoins++; document.getElementById('game-score').innerText=mgScore; document.getElementById('game-coins').innerText=mgCoins; spawnSnkFood(); } else snkArr.pop();
