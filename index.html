@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Meu Isqueiro</title>
+    <!-- Ícone da aba do navegador (Favicon) gerado em SVG puro -->
     <link rel="icon" href="icon.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,7 +27,7 @@
             -webkit-user-select: none; 
         }
 
-        /* --- TEXTURAS PREMIUM SUTIS --- */
+        /* --- TEXTURAS PREMIUM --- */
         .room-wall { 
             background-color: var(--wall-color); 
             background-image: 
@@ -38,7 +39,6 @@
         
         .room-floor { 
             background-color: var(--floor-color); 
-            /* Textura de tábuas de madeira na vertical */
             background-image: 
                 linear-gradient(to top, rgba(0,0,0,0.15) 0%, transparent 100%),
                 repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(0,0,0,0.06) 38px, rgba(0,0,0,0.06) 40px);
@@ -57,11 +57,11 @@
                 linear-gradient(135deg, #f9fafb 0%, #9ca3af 40%, #e5e7eb 60%, #6b7280 100%);
         }
 
-        /* --- SOMBRAS DE ANCORAGEM NO CHÃO --- */
+        /* --- SOMBRAS DE ANCORAGEM --- */
         .ground-shadow { position: relative; }
         .ground-shadow::after {
-            content: ''; position: absolute; bottom: -8px; left: 5%; width: 90%; height: 16px;
-            background: rgba(0,0,0,0.3); border-radius: 50%; filter: blur(3px); z-index: -1;
+            content: ''; position: absolute; bottom: -10px; left: 5%; width: 90%; height: 16px;
+            background: rgba(0,0,0,0.35); border-radius: 50%; filter: blur(3px); z-index: -1;
         }
 
         /* --- DINÂMICOS DO ISQUEIRO --- */
@@ -83,9 +83,9 @@
         .dirt-overlay { background-image: radial-gradient(circle, rgba(0,0,0,0.8) 10%, transparent 11%), radial-gradient(circle, rgba(0,0,0,0.6) 10%, transparent 11%); background-size: 20px 20px, 30px 30px; background-position: 0 0, 15px 15px; opacity: 0; pointer-events: none; transition: opacity 1s; }
 
         .progress-bar { transition: width 0.5s ease-out, background-color 0.5s ease-out; }
-        .nav-btn { transition: transform 0.1s, background-color 0.2s, color 0.2s; }
+        .nav-btn { transition: transform 0.1s, color 0.2s; }
         .nav-btn:active { transform: scale(0.90); }
-        .nav-btn.active { background-color: #3b82f6; color: white; border-color: #1d4ed8; }
+        .nav-btn.active { color: #3b82f6; }
         .action-btn { transition: transform 0.1s; }
         .action-btn:active { transform: scale(0.95); }
 
@@ -98,20 +98,21 @@
         .shop-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="h-screen w-screen flex justify-center items-center">
+<!-- O ecrã fica cinza no PC, centralizando a App (max-w-[600px]) que se assemelha a um ecrã de telemóvel largo -->
+<body class="h-screen w-screen flex justify-center items-center bg-gray-900">
 
-    <div id="game-app" class="w-full h-full sm:max-w-md sm:h-[850px] bg-white sm:rounded-[40px] sm:shadow-2xl sm:border-8 border-gray-900 relative flex flex-col overflow-hidden">
+    <div id="game-app" class="w-full h-full max-w-[600px] bg-white relative flex flex-col overflow-hidden md:shadow-[0_0_50px_rgba(0,0,0,0.5)] md:border-x-4 border-gray-950">
         
         <!-- HEADER (Status, XP, Coins, Shop) -->
-        <div class="bg-gray-800 text-white p-2 px-3 flex flex-col z-40 relative shadow-md">
+        <div class="bg-gray-800 text-white p-2 px-3 flex flex-col z-40 relative shadow-md shrink-0">
             <div class="flex justify-between items-center mb-2">
                 <div class="flex items-center gap-2">
                     <div id="level-badge" class="bg-blue-600 text-white font-black text-xs px-2 py-1 rounded border-2 border-blue-400 shadow-sm flex flex-col items-center">
                         <span>NVL</span><span id="level-display" class="text-lg leading-none">1</span>
                     </div>
-                    <div class="flex flex-col w-20">
+                    <div class="flex flex-col w-20 sm:w-24">
                         <span class="text-[10px] text-gray-400 font-bold uppercase" id="age-display">Idade: 0 dias</span>
-                        <div class="w-full h-2 bg-gray-900 rounded-full border border-gray-600 overflow-hidden">
+                        <div class="w-full h-2.5 bg-gray-900 rounded-full border border-gray-600 overflow-hidden">
                             <div id="xp-bar" class="h-full bg-cyan-400 transition-all duration-300 w-0"></div>
                         </div>
                     </div>
@@ -125,7 +126,7 @@
                     <button onclick="togglePalette()" class="p-1.5 bg-gray-700 hover:bg-gray-600 rounded-full active:scale-95 transition border border-gray-600 shadow-sm">
                         <svg class="w-5 h-5 text-gray-200" fill="currentColor" viewBox="0 0 24 24"><path d="M17.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,9A1.5,1.5 0 0,1 19,10.5A1.5,1.5 0 0,1 17.5,12M14.5,8A1.5,1.5 0 0,1 13,6.5A1.5,1.5 0 0,1 14.5,5A1.5,1.5 0 0,1 16,6.5A1.5,1.5 0 0,1 14.5,8M9.5,8A1.5,1.5 0 0,1 8,6.5A1.5,1.5 0 0,1 9.5,5A1.5,1.5 0 0,1 11,6.5A1.5,1.5 0 0,1 9.5,8M6.5,12A1.5,1.5 0 0,1 5,10.5A1.5,1.5 0 0,1 6.5,9A1.5,1.5 0 0,1 8,10.5A1.5,1.5 0 0,1 6.5,12M12,3A9,9 0 0,0 3,12A9,9 0 0,0 12,21A1.5,1.5 0 0,0 13.5,19.5C13.5,19.11 13.35,18.76 13.11,18.5C12.88,18.23 12.73,17.88 12.73,17.5A1.5,1.5 0 0,1 14.23,16H16A5,5 0 0,0 21,11C21,6.58 16.97,3 12,3Z"/></svg>
                     </button>
-                    <button onclick="openShop(false)" class="p-1.5 px-2 bg-purple-600 hover:bg-purple-500 rounded-full active:scale-95 transition border border-purple-800 font-bold text-xs flex items-center gap-1 shadow-sm">
+                    <button onclick="openShop(false)" class="p-1.5 px-3 bg-purple-600 hover:bg-purple-500 rounded-full active:scale-95 transition border border-purple-800 font-bold text-xs flex items-center gap-1 shadow-sm">
                         <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18Z"/></svg> LOJA
                     </button>
                 </div>
@@ -139,23 +140,29 @@
             </div>
         </div>
 
-        <!-- AMBIENTES & CENA -->
-        <div class="flex-1 relative flex flex-col overflow-hidden">
-            <div class="room-wall flex-1 relative w-full border-b-[6px] border-black/10">
+        <!-- AMBIENTES & CENA (ESTRUTURA RESPONSIVA PERFEITA) -->
+        <div class="flex-1 relative flex flex-col w-full overflow-hidden">
+            
+            <!-- PAREDE (60% do ecrã) -->
+            <div class="h-[60%] w-full relative room-wall border-b-[6px] border-black/10 z-0">
                 <div id="room-title" class="absolute top-4 left-1/2 -translate-x-1/2 bg-white/80 px-5 py-1 rounded-full font-black text-gray-800 text-sm tracking-widest uppercase shadow-md z-10 backdrop-blur-md border border-white/50">Cozinha</div>
                 <div id="thought-bubble" class="absolute top-14 left-1/2 -translate-x-1/2 bg-white px-3 py-2 rounded-xl text-xs font-bold text-gray-700 shadow-lg opacity-0 transition-opacity duration-500 z-10 pointer-events-none before:content-[''] before:absolute before:-bottom-2 before:left-1/2 before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-white">Estou feliz!</div>
             </div>
-            <div class="room-floor h-1/3 relative w-full"></div>
+            
+            <!-- CHÃO (40% do ecrã) -->
+            <div class="h-[40%] w-full relative room-floor z-0"></div>
 
             <div class="absolute inset-0 night-overlay z-30 flex justify-center items-center">
                 <div id="zzz-container" class="hidden absolute top-20 right-20 text-blue-300 font-black text-4xl"><span class="absolute zzz-anim" style="animation-delay: 0s;">Z</span><span class="absolute zzz-anim text-3xl" style="animation-delay: 0.5s; right: -15px; top: -15px;">z</span><span class="absolute zzz-anim text-2xl" style="animation-delay: 1s; right: -25px; top: -25px;">z</span></div>
             </div>
 
-            <!-- MÓVEIS CSS -->
-            <div id="furniture-container" class="absolute inset-0 z-10 pointer-events-none">
+            <!-- CAMADA DOS MÓVEIS (Ancorados à linha exata que divide a parede do chão, em h-[60%]) -->
+            <div id="furniture-container" class="absolute top-0 left-0 w-full h-[60%] z-10 pointer-events-none">
                 
+                <!-- COZINHA -->
                 <div id="room-kitchen" class="furniture-group w-full h-full relative">
-                    <div id="fridge" onclick="toggleFridge()" class="absolute left-[8%] w-28 h-56 border-4 border-gray-400 rounded-t-xl flex flex-col shadow-lg pointer-events-auto cursor-pointer transition-all ground-shadow bg-sky-50" style="bottom: 12%; perspective: 500px;">
+                    <!-- Geladeira (bottom-0 e translate-y empurra-a para dentro do chão de forma perspetiva) -->
+                    <div id="fridge" onclick="toggleFridge()" class="absolute bottom-0 translate-y-6 left-[8%] w-[100px] h-[200px] sm:w-28 sm:h-56 bg-gray-100 border-4 border-gray-400 rounded-t-xl flex flex-col shadow-lg pointer-events-auto cursor-pointer transition-all ground-shadow" style="perspective: 500px;">
                         <div class="absolute inset-0 flex flex-col p-2 gap-2 z-0 pt-6">
                             <div class="w-full h-2 bg-sky-200 mt-2"></div><div class="w-full h-2 bg-sky-200 mt-6"></div>
                             <div class="flex gap-1 absolute bottom-2"><div class="w-4 h-6 bg-red-400 rounded-sm"></div><div class="w-4 h-8 bg-green-400 rounded-sm"></div></div>
@@ -166,51 +173,56 @@
                         <div id="fridge-bottom" class="flex-1 w-full relative bg-gradient-to-r from-gray-100 to-gray-300 transition-all duration-500 origin-left z-10">
                             <div class="absolute right-2 top-4 w-2 h-12 bg-gray-400 rounded-full"></div>
                         </div>
-                        <div class="absolute -bottom-2 left-2 w-3 h-2 bg-gray-500"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-gray-500"></div>
+                        <div class="absolute -bottom-3 left-2 w-3 h-3 bg-gray-500"></div><div class="absolute -bottom-3 right-2 w-3 h-3 bg-gray-500"></div>
                     </div>
-                    <div class="absolute right-[5%] w-36 h-28 bg-orange-200 border-4 border-orange-400 rounded-t-lg shadow-lg ground-shadow wood-texture" style="bottom: 12%;">
+                    <!-- Balcão -->
+                    <div class="absolute bottom-0 translate-y-4 right-[5%] w-[120px] h-[80px] sm:w-36 sm:h-28 bg-orange-200 border-4 border-orange-400 rounded-t-lg shadow-lg ground-shadow wood-texture">
                         <div class="w-full h-4 bg-gray-300 border-b-4 border-orange-400 rounded-t-lg"></div><div class="w-full mt-2 h-1 bg-orange-300"></div><div class="w-full mt-2 h-1 bg-orange-300"></div>
-                        <div class="absolute -bottom-2 left-2 w-3 h-2 bg-orange-500"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-orange-500"></div>
+                        <div class="absolute -bottom-3 left-2 w-3 h-3 bg-orange-500"></div><div class="absolute -bottom-3 right-2 w-3 h-3 bg-orange-500"></div>
                     </div>
                 </div>
                 
+                <!-- BANHEIRO -->
                 <div id="room-bathroom" class="furniture-group w-full h-full relative hidden">
-                    <div class="absolute left-1/2 -translate-x-1/2 w-64 h-24 bg-white border-4 border-gray-300 rounded-b-full shadow-xl flex items-end justify-center pb-2 ground-shadow" style="bottom: 12%;">
+                    <div class="absolute bottom-0 translate-y-4 left-1/2 -translate-x-1/2 w-56 sm:w-64 h-20 sm:h-24 bg-white border-4 border-gray-300 rounded-b-full shadow-xl flex items-end justify-center pb-2 ground-shadow">
                         <div class="absolute -bottom-2 left-6 w-4 h-4 bg-gray-300 rounded-full"></div><div class="absolute -bottom-2 right-6 w-4 h-4 bg-gray-300 rounded-full"></div>
                     </div>
-                    <div class="absolute top-[20%] right-[30%] w-4 h-24 bg-gray-300 border-x-2 border-gray-500"></div><div class="absolute top-[20%] right-[30%] w-16 h-4 bg-gray-300 border-y-2 border-l-2 border-gray-500 rounded-l-full -ml-12"></div><div class="absolute top-[22%] right-[35%] w-8 h-4 bg-gray-400 rounded-b-full border-2 border-gray-600"></div>
-                    <div id="shower-fx" class="absolute top-[25%] right-[35%] w-8 h-32 hidden"><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-1 shower-water" style="animation-delay: 0s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-4 shower-water" style="animation-delay: 0.2s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-7 shower-water" style="animation-delay: 0.4s;"></div></div>
+                    <div class="absolute bottom-20 sm:bottom-24 right-[30%] w-4 h-24 bg-gray-300 border-x-2 border-gray-500"></div><div class="absolute bottom-[104px] sm:bottom-[120px] right-[30%] w-16 h-4 bg-gray-300 border-y-2 border-l-2 border-gray-500 rounded-l-full -ml-12"></div><div class="absolute bottom-[104px] sm:bottom-[120px] right-[35%] w-8 h-4 bg-gray-400 rounded-b-full border-2 border-gray-600"></div>
+                    <div id="shower-fx" class="absolute bottom-6 right-[35%] w-8 h-32 hidden"><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-1 shower-water" style="animation-delay: 0s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-4 shower-water" style="animation-delay: 0.2s;"></div><div class="w-1 h-3 bg-blue-400 rounded-full absolute left-7 shower-water" style="animation-delay: 0.4s;"></div></div>
                 </div>
                 
+                <!-- QUARTO -->
                 <div id="room-bedroom" class="furniture-group w-full h-full relative hidden pointer-events-auto">
-                    <!-- GUARDA-ROUPA NA EXATA MESMA ALTURA DA CAMA -->
-                    <div onclick="openShop(true)" class="absolute left-[5%] w-32 h-[260px] bg-amber-800 border-4 border-amber-950 rounded-t-lg shadow-2xl cursor-pointer active:scale-[0.98] transition-transform flex flex-col relative group hover:brightness-110 wood-texture ground-shadow" style="bottom: 12%;">
-                        <div class="w-full bg-amber-950 text-amber-200 text-[10px] text-center font-bold tracking-widest py-1 border-b-2 border-black/50 z-10 rounded-t-sm">ROUPAS</div>
+                    <!-- GUARDA-ROUPA FÍSICO (Ancorado no bottom-0 com translate-y) -->
+                    <div onclick="openShop(true)" class="absolute bottom-0 translate-y-8 left-[6%] w-[110px] sm:w-32 h-[220px] sm:h-[260px] bg-[#78350f] border-4 border-[#451a03] rounded-t-lg shadow-2xl cursor-pointer active:scale-[0.98] transition-transform flex flex-col relative group hover:brightness-110 wood-texture ground-shadow">
+                        <div class="w-full bg-[#451a03] text-amber-200 text-[9px] text-center font-bold tracking-widest py-0.5 border-b-2 border-black/50 z-10">ROUPAS</div>
                         <div class="flex-1 flex w-full">
-                            <div class="w-1/2 h-full border-r-2 border-black/40 bg-amber-700/80 relative"><div class="absolute top-1/2 right-1 -translate-y-1/2 w-2.5 h-8 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
-                            <div class="w-1/2 h-full bg-amber-700/80 relative"><div class="absolute top-1/2 left-1 -translate-y-1/2 w-2.5 h-8 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
+                            <div class="w-1/2 h-full border-r-2 border-black/40 bg-[#92400e]/80 relative"><div class="absolute top-1/2 right-1 -translate-y-1/2 w-2 h-7 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
+                            <div class="w-1/2 h-full bg-[#92400e]/80 relative"><div class="absolute top-1/2 left-1 -translate-y-1/2 w-2 h-7 bg-yellow-500 rounded-full border border-yellow-700 shadow-sm"></div></div>
                         </div>
-                        <div class="absolute -bottom-2 left-2 w-3 h-2 bg-amber-950"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-amber-950"></div>
+                        <div class="absolute -bottom-3 left-2 w-3 h-3 bg-[#451a03]"></div><div class="absolute -bottom-3 right-2 w-3 h-3 bg-[#451a03]"></div>
                     </div>
                     
-                    <div id="bedroom-window" class="absolute top-[8%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner">
+                    <div id="bedroom-window" class="absolute top-[10%] right-[10%] w-16 sm:w-20 h-20 sm:h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner">
                         <div class="w-1/2 h-1/2 border-r-2 border-b-2 border-gray-600 relative"><div id="win-star1" class="hidden absolute top-1 left-2 w-1 h-1 bg-white rounded-full shadow-[0_0_2px_#fff]"></div></div>
-                        <div class="w-1/2 h-1/2 border-b-2 border-gray-600 relative"><div id="win-sun-moon" class="absolute top-2 right-2 w-6 h-6 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fde047]"></div></div>
+                        <div class="w-1/2 h-1/2 border-b-2 border-gray-600 relative"><div id="win-sun-moon" class="absolute top-2 right-2 w-5 h-5 sm:w-6 sm:h-6 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fde047]"></div></div>
                         <div class="w-1/2 h-1/2 border-r-2 border-gray-600"></div>
                         <div class="w-1/2 h-1/2 relative"><div id="win-star2" class="hidden absolute bottom-2 left-2 w-1 h-1 bg-white rounded-full shadow-[0_0_2px_#fff]"></div></div>
                     </div>
-                    <!-- CAMA -->
-                    <div class="absolute right-[5%] w-44 h-20 bg-indigo-500 border-4 border-indigo-800 rounded-t-xl rounded-bl-md flex items-end shadow-xl pointer-events-none ground-shadow" style="bottom: 12%;">
-                        <div class="absolute top-3 right-4 w-14 h-8 bg-white border-2 border-gray-300 rounded-lg shadow-sm z-10"></div><div class="w-3/4 h-full bg-indigo-400 border-r-4 border-indigo-800 rounded-tl-xl rounded-bl-md shadow-inner"></div>
+                    <!-- CAMA (Ancorada no bottom-0, mesma linha exata do armário) -->
+                    <div class="absolute bottom-0 translate-y-4 right-[5%] w-36 sm:w-44 h-16 sm:h-20 bg-indigo-500 border-4 border-indigo-800 rounded-t-xl rounded-bl-md flex items-end shadow-xl pointer-events-none ground-shadow">
+                        <div class="absolute top-2 right-4 w-10 sm:w-14 h-6 sm:h-8 bg-white border-2 border-gray-300 rounded-lg shadow-sm z-10"></div><div class="w-3/4 h-full bg-indigo-400 border-r-4 border-indigo-800 rounded-tl-xl rounded-bl-md shadow-inner"></div>
                         <div class="absolute -bottom-2 left-2 w-3 h-2 bg-indigo-900"></div><div class="absolute -bottom-2 right-2 w-3 h-2 bg-indigo-900"></div>
                     </div>
                 </div>
                 
+                <!-- SALA -->
                 <div id="room-livingroom" class="furniture-group w-full h-full relative hidden pointer-events-auto">
-                    <div class="absolute left-1/2 -translate-x-1/2 w-72 h-14 bg-red-400/80 rounded-[100%] shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)] border-2 border-red-500/40 pointer-events-none backdrop-blur-sm" style="bottom: 10%;"></div>
-                    <div class="absolute left-[8%] w-36 h-14 bg-amber-800 border-4 border-amber-950 rounded-md shadow-lg flex justify-center items-start pointer-events-none ground-shadow wood-texture" style="bottom: 12%;">
-                        <div class="w-10 h-5 bg-gray-800 -mt-5 border-x-2 border-t-2 border-gray-900"></div>
-                        <div onclick="toggleTV()" class="absolute bottom-full mb-4 w-32 h-24 bg-gray-900 border-[5px] border-black rounded-lg flex items-center justify-center overflow-hidden shadow-2xl pointer-events-auto cursor-pointer group">
+                    <div class="absolute bottom-0 translate-y-10 left-1/2 -translate-x-1/2 w-64 sm:w-72 h-12 sm:h-14 bg-red-400/80 rounded-[100%] shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)] border-2 border-red-500/40 pointer-events-none backdrop-blur-sm"></div>
+                    <!-- RACK -->
+                    <div class="absolute bottom-0 translate-y-4 left-[8%] w-[120px] sm:w-36 h-[40px] sm:h-14 bg-amber-800 border-4 border-amber-950 rounded-md shadow-lg flex justify-center items-start pointer-events-none ground-shadow wood-texture">
+                        <div class="w-8 sm:w-10 h-4 sm:h-5 bg-gray-800 -mt-4 sm:-mt-5 border-x-2 border-t-2 border-gray-900"></div>
+                        <div onclick="toggleTV()" class="absolute bottom-full mb-3 w-[100px] sm:w-32 h-[75px] sm:h-24 bg-gray-900 border-[5px] border-black rounded-lg flex items-center justify-center overflow-hidden shadow-2xl pointer-events-auto cursor-pointer group">
                             <div class="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/20 to-transparent z-10 pointer-events-none"></div>
                             <div id="tv-screen" class="w-full h-full bg-black transition-colors duration-300 group-active:scale-95"></div>
                             <div class="absolute bottom-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full z-20 shadow-[0_0_4px_#ef4444]"></div>
@@ -220,9 +232,9 @@
                 </div>
             </div>
 
-            <!-- PERSONAGEM ISQUEIRO -->
-            <div class="absolute inset-0 flex justify-center items-center z-20 pointer-events-none mt-6">
-                <div class="transform scale-[0.75] origin-bottom transition-transform duration-300 flex justify-center items-center w-full h-full">
+            <!-- PERSONAGEM ISQUEIRO (Ancorado na linha exata de horizonte) -->
+            <div class="absolute top-0 left-0 w-full h-[60%] z-20 pointer-events-none flex justify-center items-end">
+                <div class="transform scale-75 origin-bottom translate-y-[20%] transition-transform duration-300 flex justify-center items-center">
                     <div id="lighter-character" class="relative breathing pointer-events-auto cursor-pointer drop-shadow-2xl transition-transform active:scale-95">
                         <div id="flame" class="absolute -top-16 left-1/2 -translate-x-1/2 w-12 h-16 flame-active z-20 transition-all duration-300">
                             <svg viewBox="0 0 30 40" class="w-full h-full drop-shadow-md"><path d="M15 0 C15 0, 30 15, 30 25 C30 35, 22 40, 15 40 C8 40, 0 35, 0 25 C0 15, 15 0, 15 0 Z" fill="#ff7a00"/><path d="M15 10 C15 10, 24 20, 24 28 C24 34, 19 38, 15 38 C11 38, 6 34, 6 28 C6 20, 15 10, 15 10 Z" fill="#ffc800"/><path d="M15 20 C15 20, 19 26, 19 31 C19 34, 17 36, 15 36 C13 36, 11 34, 11 31 C11 26, 15 20, 15 20 Z" fill="#ffffff"/></svg>
@@ -251,29 +263,33 @@
                 </div>
             </div>
 
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 action-layer">
-                <button id="action-kitchen" onclick="feed()" class="action-btn bg-blue-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(29,78,216)] flex items-center gap-2 border-2 border-blue-700 uppercase transition-colors hover:bg-blue-400">Abastecer</button>
-                <button id="action-bathroom" onclick="clean()" class="hidden action-btn bg-green-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(21,128,61)] flex items-center gap-2 border-2 border-green-700 uppercase transition-colors hover:bg-green-400">Dar Banho</button>
-                <button id="action-bedroom" onclick="toggleSleep()" class="hidden action-btn bg-indigo-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(67,56,202)] flex items-center gap-2 border-2 border-indigo-700 uppercase transition-colors hover:bg-indigo-400"><span id="btn-sleep-text">Dormir</span></button>
-                <button id="action-livingroom" onclick="openMinigamesHub()" class="hidden action-btn bg-pink-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(190,24,93)] flex items-center gap-2 border-2 border-pink-700 uppercase transition-colors hover:bg-pink-400">Jogar</button>
+            <!-- BOTÕES DE AÇÃO FIXOS NA BASE -->
+            <div class="absolute bottom-4 left-0 w-full flex justify-center z-40 pointer-events-none">
+                <button id="action-kitchen" onclick="feed()" class="pointer-events-auto action-btn bg-blue-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(29,78,216)] flex items-center gap-2 border-2 border-blue-700 uppercase transition-colors hover:bg-blue-400">Abastecer</button>
+                <button id="action-bathroom" onclick="clean()" class="hidden pointer-events-auto action-btn bg-green-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(21,128,61)] flex items-center gap-2 border-2 border-green-700 uppercase transition-colors hover:bg-green-400">Dar Banho</button>
+                <button id="action-bedroom" onclick="toggleSleep()" class="hidden pointer-events-auto action-btn bg-indigo-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(67,56,202)] flex items-center gap-2 border-2 border-indigo-700 uppercase transition-colors hover:bg-indigo-400"><span id="btn-sleep-text">Dormir</span></button>
+                <button id="action-livingroom" onclick="openMinigamesHub()" class="hidden pointer-events-auto action-btn bg-pink-500 text-white font-black px-8 py-3 rounded-full shadow-[0_5px_0_rgb(190,24,93)] flex items-center gap-2 border-2 border-pink-700 uppercase transition-colors hover:bg-pink-400">Jogar</button>
             </div>
+            
             <div id="feedback-text" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-2xl font-black text-white outline-4 drop-shadow-xl opacity-0 pointer-events-none transition-all duration-500 z-50"></div>
         </div>
 
         <!-- NAVEGAÇÃO -->
-        <div class="bg-white border-t-4 border-gray-200 p-2 sm:pb-4 flex justify-around items-center z-40 relative action-layer shadow-[0_-4px_10px_rgba(0,0,0,0.05)] rounded-b-[32px]">
-            <button onclick="changeRoom('kitchen')" id="nav-kitchen" class="nav-btn active flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500">
-                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M18.06 22.94C16.89 24.11 15 24.11 13.83 22.94L8.17 17.28C7.6 16.71 7.29 15.95 7.29 15.15C7.29 14.34 7.6 13.58 8.17 13.02L13.83 7.36C15 6.19 16.89 6.19 18.06 7.36L19.47 8.78L22.3 5.95L23.71 7.36L20.88 10.19L22.3 11.61L18.06 15.85C17.67 16.24 17.67 16.87 18.06 17.26C18.45 17.65 19.08 17.65 19.47 17.26L23.71 21.5L22.3 22.91L18.06 18.68C17.67 18.29 17.04 18.29 16.65 18.68C16.26 19.07 16.26 19.7 16.65 20.09L18.06 21.5M10.17 11L6.17 7L11.83 1.34C13 0.17 14.89 0.17 16.06 1.34L17.47 2.75L14.64 5.58L16.06 7L13.23 9.83L11.82 8.41L10.41 9.83C10.02 10.22 10.02 10.85 10.41 11.24L10.17 11M2.05 13.84L7.71 19.5L6.29 20.91L3.46 18.08L2.05 19.5L0.64 18.08L3.46 15.25L2.05 13.84Z"/></svg><span class="text-[10px] font-black uppercase">Cozinha</span>
-            </button>
-            <button onclick="changeRoom('bathroom')" id="nav-bathroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500">
-                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4A2,2 0 0,0 10,6H8A4,4 0 0,1 12,2A4,4 0 0,1 16,6H14A2,2 0 0,0 12,4M18,6V8H6V6H18M6,10H18V12H6V10M18,14V16H6V14H18M18,18H6A2,2 0 0,0 4,20V22H20V20A2,2 0 0,0 18,18Z"/></svg><span class="text-[10px] font-black uppercase">Banheiro</span>
-            </button>
-            <button onclick="changeRoom('bedroom')" id="nav-bedroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500">
-                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M19,7H11V14H3V5H1V20H3V17H21V20H23V11A4,4 0 0,0 19,7M7,13A3,3 0 0,0 10,10A3,3 0 0,0 7,7A3,3 0 0,0 4,10A3,3 0 0,0 7,13Z"/></svg><span class="text-[10px] font-black uppercase">Quarto</span>
-            </button>
-            <button onclick="changeRoom('livingroom')" id="nav-livingroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500">
-                <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M21,6H3C1.89,6 1,6.89 1,8V16A2,2 0 0,0 3,18H7V20H17V18H21A2,2 0 0,0 23,16V8C23,6.89 22.1,6 21,6M21,16H3V8H21V16M8,10H6V12H4V14H6V12H8V14H10V12H8V10M17,14A1,1 0 0,1 16,13A1,1 0 0,1 17,12A1,1 0 0,1 18,13A1,1 0 0,1 17,14M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12Z"/></svg><span class="text-[10px] font-black uppercase">Sala</span>
-            </button>
+        <div class="bg-white border-t-4 border-gray-200 w-full z-40 relative action-layer shadow-[0_-4px_10px_rgba(0,0,0,0.05)] shrink-0">
+            <div class="max-w-xl mx-auto flex justify-around items-center p-2 sm:pb-3">
+                <button onclick="changeRoom('kitchen')" id="nav-kitchen" class="nav-btn active flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500 font-bold uppercase hover:text-blue-500">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M18.06 22.94C16.89 24.11 15 24.11 13.83 22.94L8.17 17.28C7.6 16.71 7.29 15.95 7.29 15.15C7.29 14.34 7.6 13.58 8.17 13.02L13.83 7.36C15 6.19 16.89 6.19 18.06 7.36L19.47 8.78L22.3 5.95L23.71 7.36L20.88 10.19L22.3 11.61L18.06 15.85C17.67 16.24 17.67 16.87 18.06 17.26C18.45 17.65 19.08 17.65 19.47 17.26L23.71 21.5L22.3 22.91L18.06 18.68C17.67 18.29 17.04 18.29 16.65 18.68C16.26 19.07 16.26 19.7 16.65 20.09L18.06 21.5M10.17 11L6.17 7L11.83 1.34C13 0.17 14.89 0.17 16.06 1.34L17.47 2.75L14.64 5.58L16.06 7L13.23 9.83L11.82 8.41L10.41 9.83C10.02 10.22 10.02 10.85 10.41 11.24L10.17 11M2.05 13.84L7.71 19.5L6.29 20.91L3.46 18.08L2.05 19.5L0.64 18.08L3.46 15.25L2.05 13.84Z"/></svg><span class="text-[9px] sm:text-[10px]">Cozinha</span>
+                </button>
+                <button onclick="changeRoom('bathroom')" id="nav-bathroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500 font-bold uppercase hover:text-green-500">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12,4A2,2 0 0,0 10,6H8A4,4 0 0,1 12,2A4,4 0 0,1 16,6H14A2,2 0 0,0 12,4M18,6V8H6V6H18M6,10H18V12H6V10M18,14V16H6V14H18M18,18H6A2,2 0 0,0 4,20V22H20V20A2,2 0 0,0 18,18Z"/></svg><span class="text-[9px] sm:text-[10px]">Banheiro</span>
+                </button>
+                <button onclick="changeRoom('bedroom')" id="nav-bedroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500 font-bold uppercase hover:text-indigo-500">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M19,7H11V14H3V5H1V20H3V17H21V20H23V11A4,4 0 0,0 19,7M7,13A3,3 0 0,0 10,10A3,3 0 0,0 7,7A3,3 0 0,0 4,10A3,3 0 0,0 7,13Z"/></svg><span class="text-[9px] sm:text-[10px]">Quarto</span>
+                </button>
+                <button onclick="changeRoom('livingroom')" id="nav-livingroom" class="nav-btn flex flex-col items-center justify-center p-2 rounded-2xl w-1/4 border-2 border-transparent text-gray-500 font-bold uppercase hover:text-pink-500">
+                    <svg class="w-6 h-6 sm:w-7 sm:h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M21,6H3C1.89,6 1,6.89 1,8V16A2,2 0 0,0 3,18H7V20H17V18H21A2,2 0 0,0 23,16V8C23,6.89 22.1,6 21,6M21,16H3V8H21V16M8,10H6V12H4V14H6V12H8V14H10V12H8V10M17,14A1,1 0 0,1 16,13A1,1 0 0,1 17,12A1,1 0 0,1 18,13A1,1 0 0,1 17,14M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12Z"/></svg><span class="text-[9px] sm:text-[10px]">Sala</span>
+                </button>
+            </div>
         </div>
 
         <!-- MODAIS -->
@@ -286,7 +302,7 @@
         </div>
 
         <div id="shop-modal" class="hidden absolute inset-0 bg-black/70 z-50 flex flex-col justify-end transition-opacity">
-            <div class="bg-white rounded-t-3xl p-4 h-[75%] flex flex-col relative shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+            <div class="bg-white rounded-t-3xl p-4 h-[75%] max-w-[600px] mx-auto w-full flex flex-col relative shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
                 <div class="flex justify-between items-center mb-4">
                     <h2 id="shop-title" class="text-2xl font-black text-purple-600 flex items-center gap-2">LOJA</h2>
                     <div id="shop-coin-container" class="flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full border-2 border-yellow-400">
@@ -328,11 +344,11 @@
                 <button onclick="stopMinigame()" class="bg-red-500 hover:bg-red-400 px-3 py-1 rounded font-bold border-b-4 border-red-700 active:translate-y-1 active:border-b-0 text-sm transition">Sair</button>
             </div>
             
-            <div class="flex-1 relative overflow-hidden" id="canvas-container">
-                <canvas id="gameCanvas" class="block w-full h-full cursor-none"></canvas>
+            <div class="flex-1 relative overflow-hidden flex flex-col items-center" id="canvas-container">
+                <canvas id="gameCanvas" class="block w-full max-w-[600px] h-full shadow-2xl bg-black/10 cursor-none"></canvas>
                 
                 <!-- D-Pad Genérico para Snake e Tetris -->
-                <div id="dpad-controls" class="hidden absolute bottom-6 left-0 w-full px-4 flex justify-between items-end z-40 pointer-events-none">
+                <div id="dpad-controls" class="hidden absolute bottom-6 left-1/2 -translate-x-1/2 w-full max-w-[600px] px-4 flex justify-between items-end z-40 pointer-events-none">
                     <div class="flex gap-2 pointer-events-auto">
                         <button ontouchstart="btnLeft(event)" class="w-14 h-14 bg-white/80 border-b-4 border-gray-400 rounded-full font-black text-2xl active:translate-y-1 active:border-b-0 shadow-lg">&lt;</button>
                         <button ontouchstart="btnRight(event)" class="w-14 h-14 bg-white/80 border-b-4 border-gray-400 rounded-full font-black text-2xl active:translate-y-1 active:border-b-0 shadow-lg">&gt;</button>
@@ -464,13 +480,13 @@
             isSleeping = !isSleeping;
             if (isSleeping) { 
                 document.getElementById('game-app').classList.add('is-sleeping'); document.getElementById('btn-sleep-text').innerText = "ACORDAR"; document.getElementById('zzz-container').classList.remove('hidden'); document.querySelectorAll('.nav-btn:not(#nav-bedroom)').forEach(b => b.style.opacity = '0.3'); 
-                document.getElementById('bedroom-window').className = "absolute top-[8%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-950 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
+                document.getElementById('bedroom-window').className = "absolute top-[10%] right-[10%] w-16 sm:w-20 h-20 sm:h-24 border-4 border-gray-600 bg-sky-950 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
                 document.getElementById('win-sun-moon').className = "absolute top-2 right-2 w-4 h-4 bg-gray-200 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fff]";
                 document.getElementById('win-star1').classList.remove('hidden'); document.getElementById('win-star2').classList.remove('hidden');
             } else { 
                 document.getElementById('game-app').classList.remove('is-sleeping'); document.getElementById('btn-sleep-text').innerText = "DORMIR"; document.getElementById('zzz-container').classList.add('hidden'); document.querySelectorAll('.nav-btn').forEach(b => b.style.opacity = '1'); 
-                document.getElementById('bedroom-window').className = "absolute top-[8%] right-[10%] w-20 h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
-                document.getElementById('win-sun-moon').className = "absolute top-2 right-2 w-6 h-6 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fde047]";
+                document.getElementById('bedroom-window').className = "absolute top-[10%] right-[10%] w-16 sm:w-20 h-20 sm:h-24 border-4 border-gray-600 bg-sky-400 rounded-t-xl overflow-hidden flex flex-wrap pointer-events-none transition-colors duration-1000 shadow-inner";
+                document.getElementById('win-sun-moon').className = "absolute top-2 right-2 w-5 h-5 sm:w-6 sm:h-6 bg-yellow-300 rounded-full transition-all duration-1000 shadow-[0_0_10px_#fde047]";
                 document.getElementById('win-star1').classList.add('hidden'); document.getElementById('win-star2').classList.add('hidden');
             }
             updateUI();
@@ -482,8 +498,8 @@
         function generateColorPalette() {
             const wc = document.getElementById('wall-colors'), fc = document.getElementById('floor-colors'); wc.innerHTML = ''; fc.innerHTML = '';
             paletteOptions.forEach(c => {
-                let w = document.createElement('button'); w.className = 'w-10 h-10 rounded-full border-4 border-gray-300 shadow-sm active:scale-90 transition'; w.style.backgroundColor = c; w.onclick = () => { roomThemes[currentRoom].wall = c; applyRoomTheme(currentRoom); }; wc.appendChild(w);
-                let f = document.createElement('button'); f.className = 'w-10 h-10 rounded-lg border-4 border-gray-300 shadow-sm active:scale-90 transform rotate-45 mt-2 mb-2 ml-1 transition'; f.style.backgroundColor = c; f.onclick = () => { roomThemes[currentRoom].floor = c; applyRoomTheme(currentRoom); }; fc.appendChild(f);
+                let w = document.createElement('button'); w.className = 'w-8 h-8 sm:w-10 sm:h-10 rounded-full border-4 border-gray-300 shadow-sm active:scale-90 transition'; w.style.backgroundColor = c; w.onclick = () => { roomThemes[currentRoom].wall = c; applyRoomTheme(currentRoom); }; wc.appendChild(w);
+                let f = document.createElement('button'); f.className = 'w-8 h-8 sm:w-10 sm:h-10 rounded-lg border-4 border-gray-300 shadow-sm active:scale-90 transform rotate-45 mt-2 mb-2 ml-1 transition'; f.style.backgroundColor = c; f.onclick = () => { roomThemes[currentRoom].floor = c; applyRoomTheme(currentRoom); }; fc.appendChild(f);
             });
         }
 
@@ -518,7 +534,7 @@
         function openMinigamesHub() { if(!isSleeping) document.getElementById('minigames-hub').classList.remove('hidden'); }
         function closeMinigamesHub() { document.getElementById('minigames-hub').classList.add('hidden'); }
 
-        // --- MOTOR DE MINIGAMES (ZERO DELAY & CONTROLE DIRETO 1:1) ---
+        // --- MOTOR DE MINIGAMES ---
         const gameScreen = document.getElementById('game-canvas-screen'), canvas = document.getElementById('gameCanvas'), ctx = canvas.getContext('2d');
         let mgReq, mgScore = 0, mgCoins = 0, mgActive = false;
         
@@ -527,9 +543,12 @@
         let pongAi = { x: 0, y: 30, w: 60, h: 14, speed: 4 }; 
         let rcPlayer = { x: 0, y: 0, w: 28, h: 46 }; 
         let snkDir = 'UP'; 
+        let keys = { left: false, right: false }; // Keyboard state
         
         function handleGlobalTouch(clientX, clientY) {
-            const rect = canvas.getBoundingClientRect(); let x = clientX - rect.left, y = clientY - rect.top;
+            const rect = canvas.getBoundingClientRect(); 
+            const scaleX = canvas.width / rect.width;
+            let x = (clientX - rect.left) * scaleX;
             if (activeMinigame === 'pega-gas') { let px = x - (pgPlayer.width/2); pgPlayer.x = Math.max(0, Math.min(px, canvas.width - pgPlayer.width)); }
             if (activeMinigame === 'pong') { let px = x - (pongPlayer.w/2); pongPlayer.x = Math.max(0, Math.min(px, canvas.width - pongPlayer.w)); }
             if (activeMinigame === 'racing') { let px = x - (rcPlayer.w/2); rcPlayer.x = Math.max(0, Math.min(px, canvas.width - rcPlayer.w)); }
@@ -538,16 +557,37 @@
         
         let eType = '';
         canvas.addEventListener('touchstart', (e) => { e.preventDefault(); eType = 'start'; handleGlobalTouch(e.touches[0].clientX, e.touches[0].clientY); 
-            if(activeMinigame === 'tic-tac-toe') tttTouch(e.touches[0].clientX - canvas.getBoundingClientRect().left, e.touches[0].clientY - canvas.getBoundingClientRect().top);
-            if(activeMinigame === 'sudoku') sdkTouch(e.touches[0].clientX - canvas.getBoundingClientRect().left, e.touches[0].clientY - canvas.getBoundingClientRect().top);
+            if(activeMinigame === 'tic-tac-toe') tttTouch(e.touches[0].clientX, e.touches[0].clientY, true);
+            if(activeMinigame === 'sudoku') sdkTouch(e.touches[0].clientX, e.touches[0].clientY, true);
         }, { passive: false });
         canvas.addEventListener('touchmove', (e) => { e.preventDefault(); eType = 'move'; handleGlobalTouch(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
-        canvas.addEventListener('mousedown', (e) => { eType = 'start'; handleGlobalTouch(e.clientX, e.clientY);
-            if(activeMinigame === 'tic-tac-toe') tttTouch(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
-            if(activeMinigame === 'sudoku') sdkTouch(e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top);
-        });
-        canvas.addEventListener('mousemove', (e) => { eType = 'move'; handleGlobalTouch(e.clientX, e.clientY); });
         
+        canvas.addEventListener('mousedown', (e) => { eType = 'start'; handleGlobalTouch(e.clientX, e.clientY);
+            if(activeMinigame === 'tic-tac-toe') tttTouch(e.clientX, e.clientY, false);
+            if(activeMinigame === 'sudoku') sdkTouch(e.clientX, e.clientY, false);
+        });
+        canvas.addEventListener('mousemove', (e) => { if(e.buttons > 0 || activeMinigame !== 'flappy-chama') { eType = 'move'; handleGlobalTouch(e.clientX, e.clientY); } });
+
+        // Suporte Teclado PC
+        window.addEventListener('keydown', (e) => {
+            if(!mgActive) return;
+            if(activeMinigame === 'tetris') {
+                if(e.key === 'ArrowLeft' || e.key === 'a') btnLeft(); if(e.key === 'ArrowRight' || e.key === 'd') btnRight();
+                if(e.key === 'ArrowUp' || e.key === 'w') btnUp(); if(e.key === 'ArrowDown' || e.key === 's') btnDown();
+            }
+            else if(activeMinigame === 'snake') {
+                if((e.key === 'ArrowLeft' || e.key === 'a') && snkDir !== 'RIGHT') snkDir = 'LEFT'; if((e.key === 'ArrowRight' || e.key === 'd') && snkDir !== 'LEFT') snkDir = 'RIGHT';
+                if((e.key === 'ArrowUp' || e.key === 'w') && snkDir !== 'DOWN') snkDir = 'UP'; if((e.key === 'ArrowDown' || e.key === 's') && snkDir !== 'UP') snkDir = 'DOWN';
+            }
+            else if(activeMinigame === 'flappy-chama') { if(e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w') flPlayer.velocity = flPlayer.jump; }
+            else if(activeMinigame === 'pega-gas' || activeMinigame === 'pong' || activeMinigame === 'racing') {
+                if(e.key === 'ArrowLeft' || e.key === 'a') keys.left = true; if(e.key === 'ArrowRight' || e.key === 'd') keys.right = true;
+            }
+        });
+        window.addEventListener('keyup', (e) => {
+            if(e.key === 'ArrowLeft' || e.key === 'a') keys.left = false; if(e.key === 'ArrowRight' || e.key === 'd') keys.right = false;
+        });
+
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight;
             if(activeMinigame === 'pega-gas') pgPlayer.y = canvas.height - 70;
@@ -558,19 +598,19 @@
         window.addEventListener('resize', () => { if(isPlaying) resizeCanvas(); });
 
         function startMinigame(gameType) {
-            closeMinigamesHub(); activeMinigame = gameType; isPlaying = true;
+            closeMinigamesHub(); activeMinigame = gameType; isPlaying = true; keys.left = false; keys.right = false;
             gameScreen.classList.remove('hidden'); gameScreen.classList.add('flex');
             const titleEl = document.getElementById('game-title'), descEl = document.getElementById('game-desc');
             document.getElementById('dpad-controls').classList.add('hidden'); document.getElementById('btn-up').innerText = 'GIRAR'; document.getElementById('btn-down').innerText = 'v';
             
-            if(gameType === 'pega-gas') { titleEl.innerText = "PEGA GÁS"; descEl.innerHTML = "Arraste para pegar gás!<br><span class='text-yellow-400'>1 Moeda / 5 Pts.</span>"; } 
-            else if(gameType === 'flappy-chama') { titleEl.innerText = "VOO DA CHAMA"; descEl.innerHTML = "Toque rápido para voar.<br><span class='text-yellow-400'>1 Moeda / 2 Canos.</span>"; }
-            else if(gameType === 'pong') { titleEl.innerText = "TÊNIS DE MESA"; descEl.innerHTML = "Arraste a raquete na horizontal.<br><span class='text-yellow-400'>1 Moeda / Ponto.</span>"; }
+            if(gameType === 'pega-gas') { titleEl.innerText = "PEGA GÁS"; descEl.innerHTML = "Arraste ou use setas!<br><span class='text-yellow-400'>1 Moeda / 5 Pts.</span>"; } 
+            else if(gameType === 'flappy-chama') { titleEl.innerText = "VOO DA CHAMA"; descEl.innerHTML = "Toque rápido ou Espaço.<br><span class='text-yellow-400'>1 Moeda / 2 Canos.</span>"; }
+            else if(gameType === 'pong') { titleEl.innerText = "TÊNIS DE MESA"; descEl.innerHTML = "Controle a raquete (Arraste ou A/D).<br><span class='text-yellow-400'>1 Moeda / Ponto.</span>"; }
             else if(gameType === 'tic-tac-toe') { titleEl.innerText = "JOGO DA VELHA"; descEl.innerHTML = "Jogue como Azul.<br><span class='text-yellow-400'>5 Moedas / Vitória.</span>"; }
             else if(gameType === 'sudoku') { titleEl.innerText = "SUDOKU"; descEl.innerHTML = "Toque para alternar cores.<br><span class='text-yellow-400'>10 Moedas ao fechar!</span>"; }
-            else if(gameType === 'tetris') { titleEl.innerText = "TETRIS"; descEl.innerHTML = "Forme linhas completas.<br><span class='text-yellow-400'>1 Moeda / Linha.</span>"; document.getElementById('dpad-controls').classList.remove('hidden'); }
-            else if(gameType === 'racing') { titleEl.innerText = "CORRIDA TURBO"; descEl.innerHTML = "Deslize para desviar!<br><span class='text-yellow-400'>1 Moeda / 500m.</span>"; }
-            else if(gameType === 'snake') { titleEl.innerText = "COBRINHA GÁS"; descEl.innerHTML = "Use as setas para virar.<br><span class='text-yellow-400'>1 Moeda / 2 Comidas.</span>"; document.getElementById('dpad-controls').classList.remove('hidden'); document.getElementById('btn-up').innerText = '^'; }
+            else if(gameType === 'tetris') { titleEl.innerText = "TETRIS"; descEl.innerHTML = "Use botões ou Setas no PC.<br><span class='text-yellow-400'>1 Moeda / Linha.</span>"; document.getElementById('dpad-controls').classList.remove('hidden'); }
+            else if(gameType === 'racing') { titleEl.innerText = "CORRIDA TURBO"; descEl.innerHTML = "Deslize ou use Setas para desviar.<br><span class='text-yellow-400'>1 Moeda / 500m.</span>"; }
+            else if(gameType === 'snake') { titleEl.innerText = "COBRINHA GÁS"; descEl.innerHTML = "Use botões ou Setas/WASD.<br><span class='text-yellow-400'>1 Moeda / 2 Comidas.</span>"; document.getElementById('dpad-controls').classList.remove('hidden'); document.getElementById('btn-up').innerText = '^'; }
 
             document.getElementById('game-start-overlay').classList.remove('hidden'); document.getElementById('game-over-overlay').classList.add('hidden');
             resizeCanvas();
@@ -608,7 +648,6 @@
             ctx.fillRect(x, y + h*0.25, w, h*0.75); ctx.strokeStyle = '#1f2937'; ctx.lineWidth = 2; ctx.strokeRect(x, y, w, h);
             ctx.fillStyle = '#ff7a00'; ctx.beginPath(); ctx.moveTo(x + w/2, y - h*0.3); ctx.lineTo(x + w*0.2, y); ctx.lineTo(x + w*0.8, y); ctx.fill();
         }
-        
         function drawPaddle(x, y, w, h, isPlayer) {
             ctx.fillStyle = '#b45309'; ctx.fillRect(x + w/2 - 4, isPlayer ? y + h : y - 10, 8, 10); 
             ctx.fillStyle = isPlayer ? '#3b82f6' : '#ef4444'; ctx.beginPath(); ctx.roundRect(x, y, w, h, 6); ctx.fill();
@@ -619,7 +658,10 @@
         let pgItems;
         function initPegaGas() { pgPlayer.x = canvas.width/2 - pgPlayer.width/2; pgItems = []; pgLoop(); }
         function pgLoop() {
-            if (!mgActive) return; ctx.clearRect(0, 0, canvas.width, canvas.height); drawLighterAvatar(pgPlayer.x, pgPlayer.y, pgPlayer.width, pgPlayer.height);
+            if (!mgActive) return; ctx.clearRect(0, 0, canvas.width, canvas.height); 
+            if(keys.left) pgPlayer.x -= 8; if(keys.right) pgPlayer.x += 8;
+            pgPlayer.x = Math.max(0, Math.min(pgPlayer.x, canvas.width - pgPlayer.width));
+            drawLighterAvatar(pgPlayer.x, pgPlayer.y, pgPlayer.width, pgPlayer.height);
             if (Math.random() < 0.05 + (mgScore*0.001)) { pgItems.push({ x: Math.random()*(canvas.width-20), y: -20, width: 20, height: 20, speed: 4+Math.random()*4+(mgScore*0.1), type: Math.random()>0.3?'gas':'water' }); }
             for (let i = pgItems.length - 1; i >= 0; i--) {
                 let item = pgItems[i]; item.y += item.speed;
@@ -653,6 +695,8 @@
         function initPong() { pongBall = { x: canvas.width/2, y: canvas.height/2, r: 8, dx: 4*(Math.random()>0.5?1:-1), dy: 5 }; pongLoop(); }
         function pongLoop() {
             if (!mgActive) return; 
+            if(keys.left) pongPlayer.x -= 10; if(keys.right) pongPlayer.x += 10; pongPlayer.x = Math.max(10, Math.min(pongPlayer.x, canvas.width - pongPlayer.w - 10));
+
             ctx.fillStyle = '#166534'; ctx.fillRect(0,0, canvas.width, canvas.height); 
             ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.strokeRect(10, 10, canvas.width-20, canvas.height-20); 
             ctx.beginPath(); ctx.setLineDash([8, 8]); ctx.moveTo(10, canvas.height/2); ctx.lineTo(canvas.width-10, canvas.height/2); ctx.stroke(); ctx.setLineDash([]); 
@@ -677,8 +721,7 @@
                 pongBall = { x: canvas.width/2, y: canvas.height/2, r: 8, dx: 5*(Math.random()>0.5?1:-1), dy: 5 }; pongAi.speed += 0.5; 
             } else if (pongBall.y > canvas.height) { triggerGameOver(); return; }
 
-            drawPaddle(pongPlayer.x, pongPlayer.y, pongPlayer.w, pongPlayer.h, true);
-            drawPaddle(pongAi.x, pongAi.y, pongAi.w, pongAi.h, false);
+            drawPaddle(pongPlayer.x, pongPlayer.y, pongPlayer.w, pongPlayer.h, true); drawPaddle(pongAi.x, pongAi.y, pongAi.w, pongAi.h, false);
             ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(pongBall.x, pongBall.y, pongBall.r, 0, Math.PI*2); ctx.fill();
             ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.beginPath(); ctx.arc(pongBall.x-2, pongBall.y+2, pongBall.r-2, 0, Math.PI*2); ctx.fill(); 
             mgReq = requestAnimationFrame(pongLoop);
@@ -696,8 +739,10 @@
             ctx.restore(); mgReq = requestAnimationFrame(tttLoop);
         }
         function checkTTTWin(b) { const l=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; for(let x of l) { if(b[x[0]] && b[x[0]] === b[x[1]] && b[x[0]] === b[x[2]]) return b[x[0]]; } return !b.includes(0) ? -1 : 0; }
-        function tttTouch(x, y) {
+        function tttTouch(clientX, clientY, isTouch) {
             if(tttTurn !== 1) return;
+            const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width;
+            let x = (clientX - rect.left)*scaleX, y = (clientY - rect.top)*scaleX;
             let s = Math.min(canvas.width, canvas.height)*0.9; let ox = (canvas.width-s)/2, oy = (canvas.height-s)/2;
             if(x < ox || x > ox+s || y < oy || y > oy+s) return; let idx = Math.floor((y-oy)/(s/3))*3 + Math.floor((x-ox)/(s/3));
             if(tttBoard[idx] === 0) {
@@ -723,10 +768,11 @@
             }
             ctx.restore(); mgReq = requestAnimationFrame(sdkLoop);
         }
-        function sdkTouch(x, y) {
+        function sdkTouch(clientX, clientY, isTouch) {
+            const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width;
+            let x = (clientX - rect.left)*scaleX, y = (clientY - rect.top)*scaleX;
             let s = Math.min(canvas.width, canvas.height)*0.9; let ox = (canvas.width-s)/2, oy = (canvas.height-s)/2;
-            if(x < ox || x > ox+s || y < oy || y > oy+s) return;
-            let idx = Math.floor((y-oy)/(s/4))*4 + Math.floor((x-ox)/(s/4));
+            if(x < ox || x > ox+s || y < oy || y > oy+s) return; let idx = Math.floor((y-oy)/(s/4))*4 + Math.floor((x-ox)/(s/4));
             if(!sdkFixed[idx]) { sdkBoard[idx] = (sdkBoard[idx]+1)%5; if(!sdkBoard.includes(0)) {
                 let b = [sdkBoard.slice(0,4), sdkBoard.slice(4,8), sdkBoard.slice(8,12), sdkBoard.slice(12,16)], v = true;
                 for(let i=0; i<4; i++) { if(new Set(b[i]).size<4 || new Set([b[0][i], b[1][i], b[2][i], b[3][i]]).size<4) v = false; }
@@ -762,6 +808,10 @@
         function initRacing() { rcPlayer.x = canvas.width/2 - rcPlayer.w/2; rcObs = []; rcFrames = 0; rcLoop(); }
         function rcLoop() {
             if(!mgActive) return; ctx.clearRect(0,0,canvas.width,canvas.height); rcFrames++;
+            
+            if(keys.left) rcPlayer.x -= 9; if(keys.right) rcPlayer.x += 9;
+            rcPlayer.x = Math.max(0, Math.min(rcPlayer.x, canvas.width - rcPlayer.w));
+
             ctx.fillStyle = '#475569'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#cbd5e1'; rcRoadY = (rcRoadY + 5) % 40;
             for(let i=-40; i<canvas.height; i+=40) { ctx.fillRect(canvas.width/4, i+rcRoadY, 4, 20); ctx.fillRect(canvas.width*0.75, i+rcRoadY, 4, 20); }
             drawLighterAvatar(rcPlayer.x, rcPlayer.y, rcPlayer.w, rcPlayer.h);
